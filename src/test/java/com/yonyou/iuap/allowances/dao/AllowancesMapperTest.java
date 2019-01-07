@@ -59,7 +59,7 @@ public class AllowancesMapperTest {
     	System.out.println("count======"+pageResult.getContent().size());
     }
     
-   @Test
+  /* @Test
     public void testInsertSelective(){
     	int insertSelective = allowancesMapper.insertSelective(entity);
     	Assert.assertEquals(1, insertSelective);
@@ -101,5 +101,5 @@ public class AllowancesMapperTest {
     	Assert.assertNotNull(findDistinct);
     	System.out.println("findDistinctCount======"+findDistinct.size());
     }
-
+*/
 }

@@ -79,12 +79,18 @@ public class PurchaseOrderController extends BaseController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
 	public Object list(PageRequest pageRequest, SearchParams searchParams) {
-		if (pageRequest.getPageSize() == 1) {
-			Integer allCount = Integer.MAX_VALUE-1;
-			pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+		try {
+			if (pageRequest.getPageSize() == 1) {
+				Integer allCount = Integer.MAX_VALUE-1;
+				pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+			}
+			Page<PurchaseOrder> page = this.purchaseOrderService.selectAllByPage(pageRequest, searchParams);
+			return this.buildSuccess(page);
+		} catch (Exception exp) {
+			logger.error("exp", exp);
+			return this.buildError("msg", "Error update database", RequestStatusEnum.FAIL_FIELD);
 		}
-		Page<PurchaseOrder> page = this.purchaseOrderService.selectAllByPage(pageRequest, searchParams);
-		return this.buildSuccess(page);
+		
 	}
 	/**
 	 * 主子表合并处理--主表单条保存

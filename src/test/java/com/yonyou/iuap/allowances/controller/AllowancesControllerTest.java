@@ -47,7 +47,7 @@ public class AllowancesControllerTest extends JUnit4SpringRootConfig {
 
 		Assert.notNull(allowancesService);
 
-		AllowancesController demoCtrl = new AllowancesController();
+		PopupAllowancesController demoCtrl = new PopupAllowancesController();
 
 		// demoService = mock(DemoService.class);
 
@@ -69,12 +69,12 @@ public class AllowancesControllerTest extends JUnit4SpringRootConfig {
 		listData.add(entity);
 	}
 
-/*	@Test
-	public void testGet() throws Exception {
-		ResultActions result = mockMvc.perform(get("/allowances/get?search_id=0788f30730204b0983401b28fd99288c"));
-		String contentAsString = result.andReturn().getResponse().getContentAsString();
-		System.out.println("contentAsString====" + contentAsString);
-	}*/
+//	@Test
+//	public void testGet() throws Exception {
+//		ResultActions result = mockMvc.perform(get("/allowances/get?search_id=0788f30730204b0983401b28fd99288c"));
+//		String contentAsString = result.andReturn().getResponse().getContentAsString();
+//		System.out.println("contentAsString====" + contentAsString);
+//	}
 
 	@Test
 	public void testInsertSelective() throws Exception {

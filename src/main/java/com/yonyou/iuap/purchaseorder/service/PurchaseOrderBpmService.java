@@ -53,7 +53,7 @@ public class PurchaseOrderBpmService extends GenericBpmService<PurchaseOrder> {
 			// 流程实例名称
 			bpmform.setProcessInstanceName(title); // 流程实例名称
 			// 流程审批后，执行的业务处理类(controller对应URI前缀)
-			bpmform.setServiceClass("/iuap-pap-training-be/purchase_order");// 流程审批后，执行的业务处理类(controller对应URI前缀)
+			bpmform.setServiceClass("/iuap_walsin_demo/purchase_order");// 流程审批后，执行的业务处理类(controller对应URI前缀)
 			// 设置单据打开类型 uui/react
 			bpmform.setFormType(BPMFormJSON.FORMTYPE_REACT);
 			return bpmform;

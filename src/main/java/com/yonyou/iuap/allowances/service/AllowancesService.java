@@ -71,10 +71,6 @@ public class AllowancesService extends GenericIntegrateService<Allowances> {
 	
 	@LogConfig(busiCode = "allowances_updateMultiple", busiName = "员工津贴", operation = "员工津贴批量修改", templateId = "allowances_updateMultiple")
 	public void updateMultiple(List<Allowances> listData) {
-		for (Allowances allowances : listData) {
-			String now = DateUtil.format(new Date(), DATEFORMAT);
-			allowances.setApplyTime(now);
-		}
 		super.saveBatch(listData);
 	}
 

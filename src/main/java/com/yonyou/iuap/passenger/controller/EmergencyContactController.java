@@ -48,12 +48,18 @@ public class EmergencyContactController extends BaseController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
 	public Object list(PageRequest pageRequest, SearchParams searchParams) {
-		if (pageRequest.getPageSize() == 1) {
-			Integer allCount = Integer.MAX_VALUE-1;
-			pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+		try {
+			if (pageRequest.getPageSize() == 1) {
+				Integer allCount = Integer.MAX_VALUE-1;
+				pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+			}
+			Page<EmergencyContact> page = this.emergencyContactService.selectAllByPage(pageRequest, searchParams);
+			return this.buildSuccess(page);
+		} catch (Exception exp) {
+			logger.error("exp", exp);
+			return this.buildError("msg", "Error querying database", RequestStatusEnum.FAIL_FIELD);
 		}
-		Page<EmergencyContact> page = this.emergencyContactService.selectAllByPage(pageRequest, searchParams);
-		return this.buildSuccess(page);
+		
 	}
 
 	/**

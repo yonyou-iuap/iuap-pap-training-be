@@ -1,6 +1,5 @@
 package com.yonyou.iuap.allowances.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,18 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.parser.Feature;
+import com.yonyou.iuap.CSRFToken;
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.allowances.service.AllowancesEnumService;
 import com.yonyou.iuap.allowances.service.AllowancesService;
 import com.yonyou.iuap.base.web.BaseController;
-import com.yonyou.iuap.baseservice.persistence.support.CustomSelectListable;
-import com.yonyou.iuap.baseservice.persistence.support.SimpleCustomSelectList;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
-import com.yonyou.iuap.baseservice.statistics.support.ParamProcessResult;
-import com.yonyou.iuap.baseservice.statistics.util.SearchParamUtil;
 import com.yonyou.iuap.common.utils.ExcelExportImportor;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
@@ -41,9 +34,9 @@ import com.yonyou.iuap.mvc.type.SearchParams;
  * @date 2018-10-9 16:44:58
  */
 @Controller
-@RequestMapping(value = "/allowances")
-public class AllowancesController extends BaseController {
-	private Logger logger = LoggerFactory.getLogger(AllowancesController.class);
+@RequestMapping(value = "/inline_allowances")
+public class InlineAllowancesController extends BaseController {
+	private Logger logger = LoggerFactory.getLogger(InlineAllowancesController.class);
 
 	private AllowancesService allowancesService;
 
@@ -56,61 +49,44 @@ public class AllowancesController extends BaseController {
 	private StatCommonService statCommonService;
 	
 	private static final String MODELCODE = "Allowances";
-	/**
-	 * 添加
-	 * @param entity
-	 * @return
-	 */
-	@RequestMapping(value = "/insertSelective", method = RequestMethod.POST)
-	@ResponseBody
-	public Object insertSelective(@RequestBody Allowances entity) {
-		try {
-			allowancesService.insertSelective(entity);
-			return this.buildSuccess(entity);
-		} catch (Exception exp) {
-			return this.buildError("msg", exp.getMessage(), RequestStatusEnum.FAIL_FIELD);
-		}
-	}
-	/**
-	 * 修改
-	 * @param entity
-	 * @return
-	 */
-	@RequestMapping(value = "/updateSelective", method = RequestMethod.POST)
-	@ResponseBody
-	public Object updateSelective(@RequestBody Allowances entity) {
-		try {
-			allowancesService.updateSelective(entity);
-			return this.buildSuccess(entity);
-		} catch (Exception exp) {
-			return this.buildError("msg", exp.getMessage(), RequestStatusEnum.FAIL_FIELD);
-		}
-	}
 	
 	/**
 	 * 批量添加
 	 * @param listData
 	 * @return
 	 */
+	@CSRFToken
 	@RequestMapping(value = "/saveMultiple", method = RequestMethod.POST)
 	@ResponseBody
 	public Object saveMultiple(@RequestBody List<Allowances> listData) {
-		this.allowancesService.saveMultiple(listData);
-		return this.buildSuccess();
+		try {
+			this.allowancesService.saveMultiple(listData);
+			return this.buildSuccess();
+		} catch (Exception exp) {
+			logger.error("exp", exp);
+			return this.buildError("msg", "Error save database", RequestStatusEnum.FAIL_FIELD);
+		}
+		
 	}
 	/**
 	 * 批量修改
 	 * @param listData
 	 * @return
 	 */
+	@CSRFToken
 	@RequestMapping(value = "/updateMultiple", method = RequestMethod.POST)
 	@ResponseBody
 	public Object updateMultiple(@RequestBody List<Allowances> listData) {
-		this.allowancesService.updateMultiple(listData);
-		return this.buildSuccess();
+		try {
+			this.allowancesService.updateMultiple(listData);
+			return this.buildSuccess();
+		} catch (Exception exp) {
+			logger.error("exp", exp);
+			return this.buildError("msg", "Error update database", RequestStatusEnum.FAIL_FIELD);
+		}
+		
 	}
-	
-	
+		
 	/**
 	 * 删除
 	 * @param listData
@@ -119,6 +95,7 @@ public class AllowancesController extends BaseController {
 	 * @return
 	 * @throws Exception
 	 */
+	@CSRFToken
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
 	@ResponseBody
 	public Object deleteBatch(@RequestBody List<Allowances> listData, HttpServletRequest request,
@@ -171,6 +148,7 @@ public class AllowancesController extends BaseController {
 	 * @param searchMap
 	 * @return
 	 */
+	@CSRFToken(verify = false)
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Object list(PageRequest pageRequest, @RequestBody Map<String, Object> searchMap) {
@@ -188,53 +166,5 @@ public class AllowancesController extends BaseController {
 			logger.error("exp", exp);
 			return this.buildError("msg", "Error querying database", RequestStatusEnum.FAIL_FIELD);
 		}
-	}
-	/**
-	 * 分组
-	 * @param pageRequest
-	 * @param searchMap
-	 * @return
-	 */
-	@RequestMapping(value = "/listByGroup", method = RequestMethod.POST)
-	@ResponseBody
-	public Object listByGroup(PageRequest pageRequest, @RequestBody Map<String, Object> searchMap) {
-	    SearchParams searchParams = new SearchParams();
-	    searchParams.setSearchMap(searchMap);
-	    if (pageRequest.getPageSize() == 1) {
-			Integer allCount = Integer.MAX_VALUE-1;
-			pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
-		}
-	    Page<Map> page = this.statCommonService.selectAllByPage(pageRequest, searchParams, MODELCODE);
-	    AllowancesEnumService.fillDynamicList( page.getContent());
-	    return buildSuccess(page);
-	}
-	/**
-	 * 行过滤
-	 * @param searchMap
-	 * @return
-	 */
-	@RequestMapping(value = "/distinct", method = RequestMethod.POST)
-	@ResponseBody
-	public Object distinct(@RequestBody Map<String, Object> searchMap) {
-		SearchParams searchParams = new SearchParams();
-		Map<String, Object> resultMap = new HashMap<>();
-	    searchParams.setSearchMap(searchMap);
-	    /*CustomSelectListable<Allowances> calling = new SimpleCustomSelectList<Allowances>(searchParams,null){
-			@Override
-			public List<Allowances> doCustomSelectList() {
-				List<Map> list = statCommonService.findDistinct(searchParams, modelCode);
-				 List<Allowances> result = new ArrayList<>();
-				 for(Map item :list) {
-					Allowances entity = JSON.parseObject(JSONObject.toJSONString(item), Allowances.class, new Feature[] { Feature.IgnoreNotMatch });;
-					result.add(entity);
-				 }
-				return result;
-			}
-	    };
-	    List<Allowances>  list = allowancesService.customSelectListWithFeatures(calling );*/
-	    List<Map> list = this.statCommonService.findDistinct(searchParams, MODELCODE);
-	    AllowancesEnumService.fillDynamicList(list);
-        resultMap.put("content", list);
-	    return buildSuccess(list);
 	}
 }
