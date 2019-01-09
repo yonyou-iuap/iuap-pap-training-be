@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.allowances.service.AllowancesService;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
+import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.test.JUnit4SpringRootConfig;
 import com.yonyou.iuap.test.TestContextConfig;
 
@@ -48,7 +49,9 @@ public class InlineAllowancesControllerTest extends JUnit4SpringRootConfig {
 
 		mockMvc = MockMvcBuilders.standaloneSetup(demoCtrl)
 				.setMessageConverters(TestContextConfig.objectMapperHttpMessageConverter()).build();
-
+		
+		InvocationInfoProxy.setTenantid("tenant");//租户信息
+		
 		entity = new Allowances();
 		entity.setId("test32");
 		entity.setCode("test3");

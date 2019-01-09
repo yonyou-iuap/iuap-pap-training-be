@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.baseservice.statistics.dao.StatCommonMapper;
+import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import com.yonyou.iuap.mybatis.type.PageResult;
 
@@ -38,6 +39,8 @@ public class AllowancesMapperTest {
     @Before
     public void init(){
     	Assert.assertNotNull(allowancesMapper);
+    	
+    	InvocationInfoProxy.setTenantid("tenant");//租户信息
     	
     	entity = new Allowances();
     	entity.setId("test1");

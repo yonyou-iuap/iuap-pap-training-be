@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.allowances.service.AllowancesService;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
+import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.pap.base.utils.http.RestRequestUtil;
 import com.yonyou.iuap.test.JUnit4SpringRootConfig;
 import com.yonyou.iuap.test.TestContextConfig;
@@ -49,6 +50,8 @@ public class QueryAllowancesControllerTest extends JUnit4SpringRootConfig {
 
 		mockMvc = MockMvcBuilders.standaloneSetup(demoCtrl)
 				.setMessageConverters(TestContextConfig.objectMapperHttpMessageConverter()).build();
+		
+		InvocationInfoProxy.setTenantid("tenant");//租户信息
 	}
 	
 	//debug模式 SearchParamUtil.processServiceParams方法断点 

@@ -18,6 +18,7 @@ import org.springframework.util.Assert;
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.allowances.service.AllowancesService;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
+import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.test.JUnit4SpringRootConfig;
 import com.yonyou.iuap.test.TestContextConfig;
 
@@ -47,7 +48,9 @@ public class PopupAllowancesControllerTest extends JUnit4SpringRootConfig {
 
 		mockMvc = MockMvcBuilders.standaloneSetup(demoCtrl)
 				.setMessageConverters(TestContextConfig.objectMapperHttpMessageConverter()).build();
-
+		
+		InvocationInfoProxy.setTenantid("tenant");//租户信息
+		
 		entity = new Allowances();
 		entity.setId("test31");
 		entity.setCode("test3");
@@ -68,7 +71,7 @@ public class PopupAllowancesControllerTest extends JUnit4SpringRootConfig {
 		System.out.println(contentAsString);
 	}
 
-	@Test
+	/*@Test
 	public void testUpdateSelective() throws Exception {
 		ResultActions result = mockMvc.perform(post("/popup_allowances/updateSelective")
 				.contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(entity)));
@@ -81,7 +84,7 @@ public class PopupAllowancesControllerTest extends JUnit4SpringRootConfig {
 				.contentType(MediaType.APPLICATION_JSON).content(convertObjectToJsonBytes(listData)));
 		String contentAsString = result.andReturn().getResponse().getContentAsString();
 		System.out.println(contentAsString);
-	}
+	}*/
 	
 
 }

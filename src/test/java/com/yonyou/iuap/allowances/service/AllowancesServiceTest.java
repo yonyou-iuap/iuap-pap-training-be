@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
+import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.type.SearchParams;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,6 +35,8 @@ public class AllowancesServiceTest {
     public void init(){
     	Assert.assertNotNull(allowancesService);
     	
+    	InvocationInfoProxy.setTenantid("tenant");//租户信息
+    	
     	entity = new Allowances();
     	entity.setId("test2");
     	entity.setCode("test2");
@@ -46,18 +49,18 @@ public class AllowancesServiceTest {
 		listData.add(entity);
     }
 
-	@Test
+    @Test
 	public void testInsertSelective() {
 		Allowances allowances = allowancesService.insertSelective(entity);
 		Assert.assertNotNull(allowances);
 	}
-	
+    
 	@Test
 	public void testUpdateSelective() {
 		Allowances allowances = allowancesService.updateSelective(entity);
 		Assert.assertNotNull(allowances);
 	}
-	
+	/*
 	@Test
 	public void testSaveMultiple() {
 		allowancesService.saveMultiple(listData);
@@ -66,8 +69,8 @@ public class AllowancesServiceTest {
 	@Test
 	public void testUpdateMultiple() {
 		allowancesService.updateMultiple(listData);
-	}
-	//debug模式
+	}*/
+	/*//debug模式
 	@Test
 	public void testSelectAllByPage() {
 		PageRequest pageRequest = new PageRequest(0, 10, null);
@@ -86,6 +89,6 @@ public class AllowancesServiceTest {
     	List<Map> findDistinct = statCommonService.findDistinct(searchParams, "Allowances");
     	Assert.assertNotNull(findDistinct);
     	System.out.println("findDistinctCount======"+findDistinct.size());
-	}
+	}*/
 
 }
