@@ -12,6 +12,12 @@
 		<result column="ORDER_PRICE" property="orderPrice"/>
 		<result column="ORDER_DATE" property="orderDate" />
 		<result column="ORDER_NAME" property="orderName" />
+		
+		<result column="ORDER_NAME2" property="orderName2" />
+		<result column="ORDER_NAME3" property="orderName3" />
+		<result column="ORDER_NAME4" property="orderName4" />
+		<result column="ORDER_NAME5" property="orderName5" />
+		<result column="ORDER_NAME6" property="orderName6" />
 
 		<result column="dr" property="dr" />
 		<result column="ts" property="ts" />
@@ -73,8 +79,27 @@
 			</if>
 			<if
 				test="condition.searchMap.orderName!=null and condition.searchMap.orderName!='' ">
-				and t.ORDER_NAME LIKE CONCAT( CONCAT('%',
-				#{condition.searchMap.orderName}),'%')
+				and t.ORDER_NAME LIKE CONCAT( CONCAT('%',#{condition.searchMap.orderName}),'%')
+			</if>
+			<if
+				test="condition.searchMap.orderName2!=null and condition.searchMap.orderName2!='' ">
+				and t.ORDER_NAME2 LIKE CONCAT( CONCAT('%',#{condition.searchMap.orderName2}),'%')
+			</if>
+			<if
+				test="condition.searchMap.orderName3!=null and condition.searchMap.orderName3!='' ">
+				and t.ORDER_NAME3 LIKE CONCAT( CONCAT('%',#{condition.searchMap.orderName3}),'%')
+			</if>
+			<if
+				test="condition.searchMap.orderName4!=null and condition.searchMap.orderName4!='' ">
+				and t.ORDER_NAME4 LIKE CONCAT( CONCAT('%',#{condition.searchMap.orderName4}),'%')
+			</if>
+			<if
+				test="condition.searchMap.orderName5!=null and condition.searchMap.orderName5!='' ">
+				and t.ORDER_NAME5 LIKE CONCAT( CONCAT('%',#{condition.searchMap.orderName5}),'%')
+			</if>
+			<if
+				test="condition.searchMap.orderName6!=null and condition.searchMap.orderName6!='' ">
+				and t.ORDER_NAME6 LIKE CONCAT( CONCAT('%',#{condition.searchMap.orderName6}),'%')
 			</if>
 			<if
 				test="condition.searchMap.tenantid!=null and condition.searchMap.tenantid!='' ">

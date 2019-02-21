@@ -46,12 +46,6 @@ public class ModelService extends GenericIntegrateService<Model> {
 		return super.insertSelective(entity);
 	}
 
-	@Override
-	@LogConfig(busiCode = "model_save", busiName = "视图模型", operation = "视图模型添加或修改", templateId = "model_save")
-	public Model save(Model entity) {
-		return super.save(entity);
-	}
-
 	/**
 	 * @CAU 可插拔设计
 	 * @return 向父类 GenericIntegrateService 提供可插拔的特性声明

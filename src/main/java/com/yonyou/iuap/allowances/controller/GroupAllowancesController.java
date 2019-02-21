@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yonyou.iuap.CSRFToken;
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.allowances.service.AllowancesEnumService;
 import com.yonyou.iuap.allowances.service.AllowancesService;
@@ -31,9 +30,9 @@ import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
  * @date 2018-10-9 16:44:58
  */
 @Controller
-@RequestMapping(value = "/query_allowances")
-public class QueryAllowancesController extends BaseController {
-	private Logger logger = LoggerFactory.getLogger(QueryAllowancesController.class);
+@RequestMapping(value = "/group_allowances")
+public class GroupAllowancesController extends BaseController {
+	private Logger logger = LoggerFactory.getLogger(GroupAllowancesController.class);
 	//多语常量
 	private static final String KEY1 = "ja.all.con1.0001";
     private static final String MSG1 = "查询数据异常";
@@ -56,7 +55,6 @@ public class QueryAllowancesController extends BaseController {
 	 * @param searchMap
 	 * @return
 	 */
-	@CSRFToken(verify = false)
 	@RequestMapping(value = "/list", method = RequestMethod.POST)
 	@ResponseBody
 	public Object list(PageRequest pageRequest,@RequestBody Map<String, Object> searchMap) {
@@ -76,11 +74,34 @@ public class QueryAllowancesController extends BaseController {
 		}
 	}
 	/**
+	 * 分组
+	 * @param pageRequest
+	 * @param searchMap
+	 * @return
+	 */
+	@RequestMapping(value = "/listByGroup", method = RequestMethod.POST)
+	@ResponseBody
+	public Object listByGroup(PageRequest pageRequest, @RequestBody Map<String, Object> searchMap) {
+		try { 
+			SearchParams searchParams = new SearchParams();
+		    searchParams.setSearchMap(searchMap);
+		    if (pageRequest.getPageSize() == 1) {
+				Integer allCount = Integer.MAX_VALUE-1;
+				pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+			}
+		    Page<Map> page = this.statCommonService.selectAllByPage(pageRequest, searchParams, MODELCODE);
+		    AllowancesEnumService.fillDynamicList( page.getContent());
+		    return buildSuccess(page);
+		} catch (Exception exp) {
+			logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
+		}
+	}
+	/**
 	 * 行过滤
 	 * @param searchMap
 	 * @return
 	 */
-	@CSRFToken(verify = false)
 	@RequestMapping(value = "/distinct", method = RequestMethod.POST)
 	@ResponseBody
 	public Object distinct(@RequestBody Map<String, Object> searchMap) {
@@ -88,19 +109,6 @@ public class QueryAllowancesController extends BaseController {
 			SearchParams searchParams = new SearchParams();
 			Map<String, Object> resultMap = new HashMap<>();
 		    searchParams.setSearchMap(searchMap);
-		    /*CustomSelectListable<Allowances> calling = new SimpleCustomSelectList<Allowances>(searchParams,null){
-				@Override
-				public List<Allowances> doCustomSelectList() {
-					List<Map> list = statCommonService.findDistinct(searchParams, modelCode);
-					 List<Allowances> result = new ArrayList<>();
-					 for(Map item :list) {
-						Allowances entity = JSON.parseObject(JSONObject.toJSONString(item), Allowances.class, new Feature[] { Feature.IgnoreNotMatch });;
-						result.add(entity);
-					 }
-					return result;
-				}
-		    };
-		    List<Allowances>  list = allowancesService.customSelectListWithFeatures(calling );*/
 		    List<Map> list = this.statCommonService.findDistinct(searchParams, MODELCODE);
 		    AllowancesEnumService.fillDynamicList(list);
 	        resultMap.put("content", list);

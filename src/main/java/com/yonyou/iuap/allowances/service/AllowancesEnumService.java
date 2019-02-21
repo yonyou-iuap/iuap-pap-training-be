@@ -1,13 +1,16 @@
 package com.yonyou.iuap.allowances.service;
 
-import com.yonyou.iuap.allowances.entity.Allowances;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Service;
+
+import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 
 @Service
 public class AllowancesEnumService implements QueryFeatureExtension<Allowances> {
@@ -17,27 +20,27 @@ public class AllowancesEnumService implements QueryFeatureExtension<Allowances> 
 	private static Map<String, String> monthMap = new HashMap<String, String>();
 	private static Map<String, String> pickTypeMap = new HashMap<String, String>();
 	static {
-		sexMap.put("0", "女");
-		sexMap.put("1", "男");
-		exdeedsMap.put("0", "未超标");
-		exdeedsMap.put("1", "超标");
-		allowanceTypeMap.put("1", "电脑补助");
-		allowanceTypeMap.put("2", "住宿补助");
-		allowanceTypeMap.put("3", "交通补助");
-		monthMap.put("1", "一月");
-		monthMap.put("2", "二月");
-		monthMap.put("3", "三月");
-		monthMap.put("4", "四月");
-		monthMap.put("5", "五月");
-		monthMap.put("6", "六月");
-		monthMap.put("7", "七月");
-		monthMap.put("8", "八月");
-		monthMap.put("9", "九月");
-		monthMap.put("10", "十月");
-		monthMap.put("11", "十一月");
-		monthMap.put("12", "十二月");
-		pickTypeMap.put("1", "转账");
-		pickTypeMap.put("2", "现金");
+		sexMap.put("0", MessageSourceUtil.getMessage("ja.all.enum.0001", "女"));
+		sexMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0002", "男"));
+		exdeedsMap.put("0", MessageSourceUtil.getMessage("ja.all.enum.0003", "未超标"));
+		exdeedsMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0004", "超标"));
+		allowanceTypeMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0005", "电脑补助"));
+		allowanceTypeMap.put("2", MessageSourceUtil.getMessage("ja.all.enum.0006", "住宿补助"));
+		allowanceTypeMap.put("3", MessageSourceUtil.getMessage("ja.all.enum.0007", "交通补助"));
+		monthMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0008", "一月"));
+		monthMap.put("2", MessageSourceUtil.getMessage("ja.all.enum.0009", "二月"));
+		monthMap.put("3", MessageSourceUtil.getMessage("ja.all.enum.0010", "三月"));
+		monthMap.put("4", MessageSourceUtil.getMessage("ja.all.enum.0011", "四月"));
+		monthMap.put("5", MessageSourceUtil.getMessage("ja.all.enum.0012", "五月"));
+		monthMap.put("6", MessageSourceUtil.getMessage("ja.all.enum.0013", "六月"));
+		monthMap.put("7", MessageSourceUtil.getMessage("ja.all.enum.0014", "七月"));
+		monthMap.put("8", MessageSourceUtil.getMessage("ja.all.enum.0015", "八月"));
+		monthMap.put("9", MessageSourceUtil.getMessage("ja.all.enum.0016", "九月"));
+		monthMap.put("10", MessageSourceUtil.getMessage("ja.all.enum.0017", "十月"));
+		monthMap.put("11", MessageSourceUtil.getMessage("ja.all.enum.0018", "十一月"));
+		monthMap.put("12", MessageSourceUtil.getMessage("ja.all.enum.0019", "十二月"));
+		pickTypeMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0020", "转账"));
+		pickTypeMap.put("2", MessageSourceUtil.getMessage("ja.all.enum.0021", "现金"));
 	}
 
 	public static List<Map> fillDynamicList(List<Map> list) {

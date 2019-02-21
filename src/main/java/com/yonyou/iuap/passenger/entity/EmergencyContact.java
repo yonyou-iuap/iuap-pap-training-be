@@ -139,5 +139,65 @@ public class EmergencyContact extends AbsBpmModel implements Serializable, Multi
 	public void setTenantid(String tenantid) {
 		this.tenantid = tenantid;
 	}
+	
+	
+	@Condition
+	@Column(name = "CONTACT_NAME2")
+	private String contactName2; // 联系人姓名2
+	
+	@Condition
+	@Column(name = "CONTACT_NAME3")
+	private String contactName3; // 联系人姓名3
+	
+	@Condition
+	@Column(name = "CONTACT_NAME4")
+	private String contactName4; // 联系人姓名4
+	
+	@Condition
+	@Column(name = "CONTACT_NAME5")
+	private String contactName5; // 联系人姓名5
+	
+	@Condition
+	@Column(name = "CONTACT_NAME6")
+	private String contactName6; // 联系人姓名6
 
+	public String getContactName2() {
+		return contactName2;
+	}
+
+	public void setContactName2(String contactName2) {
+		this.contactName2 = contactName2;
+	}
+
+	public String getContactName3() {
+		return contactName3;
+	}
+
+	public void setContactName3(String contactName3) {
+		this.contactName3 = contactName3;
+	}
+
+	public String getContactName4() {
+		return contactName4;
+	}
+
+	public void setContactName4(String contactName4) {
+		this.contactName4 = contactName4;
+	}
+
+	public String getContactName5() {
+		return contactName5;
+	}
+
+	public void setContactName5(String contactName5) {
+		this.contactName5 = contactName5;
+	}
+
+	public String getContactName6() {
+		return contactName6;
+	}
+
+	public void setContactName6(String contactName6) {
+		this.contactName6 = contactName6;
+	}
 }

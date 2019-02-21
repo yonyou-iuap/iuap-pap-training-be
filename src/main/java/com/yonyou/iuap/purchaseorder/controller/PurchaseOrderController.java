@@ -1,50 +1,29 @@
 package com.yonyou.iuap.purchaseorder.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.WordUtils;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.apache.commons.collections.MapUtils;
 
 import com.yonyou.iuap.base.web.BaseController;
-import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
-import com.yonyou.iuap.purchaseorder.entity.PurchaseOrder;
-import com.yonyou.iuap.purchaseorder.service.PurchaseOrderService;
-import com.yonyou.iuap.mvc.annotation.FrontModelExchange;
-import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.mvc.type.JsonResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import cn.hutool.core.util.StrUtil;
-import com.yonyou.iuap.purchaseorder.service.PurchaseOrderAssoService;
-import com.yonyou.iuap.baseservice.vo.GenericAssoVo;
 import com.yonyou.iuap.baseservice.entity.annotation.Associative;
-import org.springframework.util.StringUtils;
-import com.yonyou.iuap.common.utils.ExcelExportImportor;
+import com.yonyou.iuap.baseservice.vo.GenericAssoVo;
 import com.yonyou.iuap.context.InvocationInfoProxy;
+import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
+import com.yonyou.iuap.mvc.type.SearchParams;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MethodUtils;
+import com.yonyou.iuap.purchaseorder.entity.PurchaseOrder;
+import com.yonyou.iuap.purchaseorder.service.PurchaseOrderAssoService;
+import com.yonyou.iuap.purchaseorder.service.PurchaseOrderService;
 
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
  * 说明：请购单主表PurchaseOrder 基础Controller——提供数据增、删、改、查、导入导出等rest接口
@@ -54,9 +33,16 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 @Controller
 @RequestMapping(value = "/purchase_order")
 public class PurchaseOrderController extends BaseController {
-
 	private Logger logger = LoggerFactory.getLogger(PurchaseOrderController.class);
-
+	//多语常量
+	private static final String KEY1 = "ja.all.con1.0001";
+    private static final String MSG1 = "查询数据异常！";
+    private static final String KEY2 = "ja.all.con1.0002";
+    private static final String MSG2 = "新增数据异常！";
+    private static final String NAME = "orderName";
+	private static final String KEY = "ja.all.con.00001";
+	private static final String MESSAGE = "名称不能为空！";
+    
 	private PurchaseOrderService purchaseOrderService;
 
 	@Autowired
@@ -87,19 +73,11 @@ public class PurchaseOrderController extends BaseController {
 			Page<PurchaseOrder> page = this.purchaseOrderService.selectAllByPage(pageRequest, searchParams);
 			return this.buildSuccess(page);
 		} catch (Exception exp) {
-			logger.error("exp", exp);
-			return this.buildError("msg", "Error update database", RequestStatusEnum.FAIL_FIELD);
+			logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
 		}
 		
 	}
-	/**
-	 * 主子表合并处理--主表单条保存
-	 * @see com.yonyou.iuap.baseservice.controller.GenericAssoController
-	 * @param vo
-	 * GenericAssoVo ,
-	 * 
-	 * @return 主表的业务实体
-	 */
 	/**
 	 * 主子表合并处理--保存和修改
 	 * @param vo
@@ -109,12 +87,35 @@ public class PurchaseOrderController extends BaseController {
 	@RequestMapping(value = "/saveAssoVo", method = RequestMethod.POST)
 	@ResponseBody
 	public Object saveAssoVo(@RequestBody GenericAssoVo<PurchaseOrder> vo) {
+		try{
 		Associative annotation = vo.getEntity().getClass().getAnnotation(Associative.class);
 		if (annotation == null || StringUtils.isEmpty(annotation.fkName())) {
-			return buildError("", "Nothing got @Associative or without fkName", RequestStatusEnum.FAIL_FIELD);
+			return buildError("msg", MessageSourceUtil.getMessage("ja.pur.con1.0001", "没有@Associative或没有fkName属性！"), RequestStatusEnum.FAIL_FIELD);
 		}
+		PurchaseOrder entity = vo.getEntity();
+		 /**国际化 当前语种*/
+        String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
+        String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
+        if (StringUtils.isBlank(loacleName)) {
+        	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+        }
+        /**国际化 验证默认语种*/
+        String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
+        String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
+        if (StringUtils.isBlank(defaultName)) {
+        	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+        }
+        /**国际化 验证简体中文**/
+        String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
+        if (StringUtils.isBlank(simpleChineseName)) {
+        	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+        }
 		Object result = purchaseOrderAssoService.saveAssoVo(vo, annotation);
 		return this.buildSuccess(result);
+		} catch (Exception exp) {
+			logger.error(MessageSourceUtil.getMessage(KEY2, MSG2), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY2, MSG2), RequestStatusEnum.FAIL_FIELD);
+		}
 	}
 
 	/**
@@ -127,22 +128,21 @@ public class PurchaseOrderController extends BaseController {
 	@ResponseBody
 	public Object deleAssoVo(@RequestBody PurchaseOrder... entities) {
 		if (entities.length == 0) {
-			return this.buildGlobalError("requst entity must not be empty");
+			return this.buildGlobalError(MessageSourceUtil.getMessage("ja.pur.con1.0002", "请求实体不能为空！"));
 		}
 		Associative annotation = entities[0].getClass().getAnnotation(Associative.class);
 		if (annotation != null && !StringUtils.isEmpty(annotation.fkName())) {
 			int result = 0;
 			for (PurchaseOrder entity : entities) {
 				if (StringUtils.isEmpty(entity.getId())) {
-					return this.buildError("ID", "ID field is empty:" + entity.toString(),
-							RequestStatusEnum.FAIL_FIELD);
+					return this.buildError("msg", MessageSourceUtil.getMessage("ja.pur.con1.0003", "ID字段为空！"),RequestStatusEnum.FAIL_FIELD);
 				} else {
 					result += this.purchaseOrderAssoService.deleAssoVo(entity, annotation);
 				}
 			}
-			return this.buildSuccess(result + " rows(both entity and its sub-entities) has been deleted!");
+			return this.buildSuccess(MessageSourceUtil.getMessage("ja.pur.con1.0004", "数据已被删除！"));
 		} else {
-			return this.buildError("", "Nothing got @Associative or without fkName", RequestStatusEnum.FAIL_FIELD);
+			return this.buildError("msg", MessageSourceUtil.getMessage("ja.pur.con1.0001", "没有@Associative或没有fkName属性！"), RequestStatusEnum.FAIL_FIELD);
 		}
 	}
 

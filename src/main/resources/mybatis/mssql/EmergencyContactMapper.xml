@@ -10,7 +10,13 @@
 		<result column="PASSENGER_ID" property="passengerId" />
 		<result column="REMARK" property="remark" />
 		<result column="CONTACT_PHONE" property="contactPhone" />
-
+		
+		<result column="CONTACT_NAME2" property="contactName2" />
+		<result column="CONTACT_NAME3" property="contactName3" />
+		<result column="CONTACT_NAME4" property="contactName4" />
+		<result column="CONTACT_NAME5" property="contactName5" />
+		<result column="CONTACT_NAME6" property="contactName6" />
+		
 		<result column="dr" property="dr" />
 		<result column="ts" property="ts" />
 		<result column="last_modified" property="lastModified" />
@@ -38,6 +44,26 @@
 			<if
 				test="condition.searchMap.contactName!=null and condition.searchMap.contactName!='' ">
 				and t.CONTACT_NAME = #{condition.searchMap.contactName}
+			</if>
+			<if
+				test="condition.searchMap.contactName2!=null and condition.searchMap.contactName2!='' ">
+				and t.CONTACT_NAME2 = #{condition.searchMap.contactName2}
+			</if>
+			<if
+				test="condition.searchMap.contactName3!=null and condition.searchMap.contactName3!='' ">
+				and t.CONTACT_NAME3 = #{condition.searchMap.contactName3}
+			</if>
+			<if
+				test="condition.searchMap.contactName4!=null and condition.searchMap.contactName4!='' ">
+				and t.CONTACT_NAME4 = #{condition.searchMap.contactName4}
+			</if>
+			<if
+				test="condition.searchMap.contactName5!=null and condition.searchMap.contactName5!='' ">
+				and t.CONTACT_NAME5 = #{condition.searchMap.contactName5}
+			</if>
+			<if
+				test="condition.searchMap.contactName6!=null and condition.searchMap.contactName6!='' ">
+				and t.CONTACT_NAME6 = #{condition.searchMap.contactName6}
 			</if>
 			<if
 				test="condition.searchMap.passengerId!=null and condition.searchMap.passengerId!='' ">

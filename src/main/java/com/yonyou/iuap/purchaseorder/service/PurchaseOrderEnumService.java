@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 
 @Service
 public class PurchaseOrderEnumService implements QueryFeatureExtension<PurchaseOrder> {
@@ -15,14 +16,14 @@ public class PurchaseOrderEnumService implements QueryFeatureExtension<PurchaseO
 	private static Map<String, String> orderTypeMap = new HashMap<String, String>();
 	private static Map<String, String> bpmStateMap = new HashMap<String, String>();
 	static {
-		orderTypeMap.put("1", "普通采购");
-		orderTypeMap.put("2", "委托代销");
-		orderTypeMap.put("3", "直运采购");
-
-		bpmStateMap.put("0", "待确认");
-		bpmStateMap.put("1", "执行中");
-		bpmStateMap.put("2", "已办结");
-		bpmStateMap.put("3", "终止");
+		orderTypeMap.put("1", MessageSourceUtil.getMessage("ja.pur.enum.0001", "普通采购"));
+		orderTypeMap.put("2", MessageSourceUtil.getMessage("ja.pur.enum.0002","委托代销"));
+		orderTypeMap.put("3", MessageSourceUtil.getMessage("ja.pur.enum.0003","直运采购"));
+		
+		bpmStateMap.put("0", MessageSourceUtil.getMessage("ja.pur.enum.0004","待确认"));
+		bpmStateMap.put("1", MessageSourceUtil.getMessage("ja.pur.enum.0005","执行中"));
+		bpmStateMap.put("2", MessageSourceUtil.getMessage("ja.pur.enum.0006","已办结"));
+		bpmStateMap.put("3", MessageSourceUtil.getMessage("ja.pur.enum.0007","终止"));
 
 	}
 

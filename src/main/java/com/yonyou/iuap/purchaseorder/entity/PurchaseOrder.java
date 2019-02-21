@@ -221,5 +221,61 @@ public class PurchaseOrder extends AbsBpmModel implements Serializable, MultiTen
 	public void setBpmStateEnumValue(String bpmStateEnumValue) {
 		this.bpmStateEnumValue = bpmStateEnumValue;
 	}
+	
+	
+	@Condition(match = Match.LIKE)
+	@Column(name = "ORDER_NAME2")
+	private String orderName2; // 请购单名称2
+	@Condition(match = Match.LIKE)
+	@Column(name = "ORDER_NAME3")
+	private String orderName3; // 请购单名称3
+	@Condition(match = Match.LIKE)
+	@Column(name = "ORDER_NAME4")
+	private String orderName4; // 请购单名称4
+	@Condition(match = Match.LIKE)
+	@Column(name = "ORDER_NAME5")
+	private String orderName5; // 请购单名称5
+	@Condition(match = Match.LIKE)
+	@Column(name = "ORDER_NAME6")
+	private String orderName6; // 请购单名称6
 
+	public String getOrderName2() {
+		return orderName2;
+	}
+
+	public void setOrderName2(String orderName2) {
+		this.orderName2 = orderName2;
+	}
+
+	public String getOrderName3() {
+		return orderName3;
+	}
+
+	public void setOrderName3(String orderName3) {
+		this.orderName3 = orderName3;
+	}
+
+	public String getOrderName4() {
+		return orderName4;
+	}
+
+	public void setOrderName4(String orderName4) {
+		this.orderName4 = orderName4;
+	}
+
+	public String getOrderName5() {
+		return orderName5;
+	}
+
+	public void setOrderName5(String orderName5) {
+		this.orderName5 = orderName5;
+	}
+
+	public String getOrderName6() {
+		return orderName6;
+	}
+
+	public void setOrderName6(String orderName6) {
+		this.orderName6 = orderName6;
+	}
 }

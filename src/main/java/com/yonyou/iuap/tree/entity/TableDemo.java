@@ -124,5 +124,64 @@ public class TableDemo extends AbsDrModel implements Serializable, MultiTenant {
 	public void setTenantid(String tenantid) {
 		this.tenantid = tenantid;
 	}
+	
+	@Condition
+	@Column(name = "NAME2")
+	private String name2; // 姓名2
+	
+	@Condition
+	@Column(name = "NAME3")
+	private String name3; // 姓名3
+	
+	@Condition
+	@Column(name = "NAME4")
+	private String name4; // 姓名4
+	
+	@Condition
+	@Column(name = "NAME5")
+	private String name5; // 姓名5
+	
+	@Condition
+	@Column(name = "NAME6")
+	private String name6; // 姓名6
 
+	public String getName2() {
+		return name2;
+	}
+
+	public void setName2(String name2) {
+		this.name2 = name2;
+	}
+
+	public String getName3() {
+		return name3;
+	}
+
+	public void setName3(String name3) {
+		this.name3 = name3;
+	}
+
+	public String getName4() {
+		return name4;
+	}
+
+	public void setName4(String name4) {
+		this.name4 = name4;
+	}
+
+	public String getName5() {
+		return name5;
+	}
+
+	public void setName5(String name5) {
+		this.name5 = name5;
+	}
+
+	public String getName6() {
+		return name6;
+	}
+
+	public void setName6(String name6) {
+		this.name6 = name6;
+	}
 }

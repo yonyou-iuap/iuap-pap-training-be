@@ -1,13 +1,7 @@
 package com.yonyou.iuap.tree.controller;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
-import java.util.ArrayList;
-import net.sf.json.JSONObject;
-import org.apache.commons.lang.WordUtils;
-import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +12,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.apache.commons.collections.MapUtils;
 
 import com.yonyou.iuap.base.web.BaseController;
+import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.tree.entity.TableDemo;
 import com.yonyou.iuap.tree.service.TableDemoService;
-import com.yonyou.iuap.mvc.annotation.FrontModelExchange;
 import com.yonyou.iuap.mvc.type.SearchParams;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MethodUtils;
 import com.yonyou.iuap.mvc.type.JsonResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-
-import com.yonyou.iuap.common.utils.ExcelExportImportor;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
 /**
  * 说明：表TableDemo 基础Controller——提供数据增、删、改、查、导入导出等rest接口
  * 
@@ -51,9 +36,20 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 @RequestMapping(value = "/table_demo")
 @Api(tags = "树表table接口",description="树表table文档说明",hidden=true)
 public class TableDemoController extends BaseController {
-
 	private Logger logger = LoggerFactory.getLogger(TableDemoController.class);
-
+	//多语常量
+	private static final String KEY1 = "ja.all.con1.0001";
+    private static final String MSG1 = "查询数据异常！";
+    private static final String KEY2 = "ja.all.con1.0002";
+    private static final String MSG2 = "新增数据异常！";
+    private static final String KEY3 = "ja.all.con1.0003";
+    private static final String MSG3 = "修改数据异常！";
+    private static final String KEY4 = "ja.all.con1.0004";
+    private static final String MSG4 = "删除数据异常！";
+    private static final String NAME = "name";
+	private static final String KEY = "ja.all.con.00001";
+	private static final String MESSAGE = "名称不能为空！";
+	
 	private TableDemoService tableDemoService;
 
 	@Autowired
@@ -75,12 +71,17 @@ public class TableDemoController extends BaseController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
 	public Object list(PageRequest pageRequest, SearchParams searchParams) {
-		if (pageRequest.getPageSize() == 1) {
-			Integer allCount = Integer.MAX_VALUE-1;
-			pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+		try {
+			if (pageRequest.getPageSize() == 1) {
+				Integer allCount = Integer.MAX_VALUE-1;
+				pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+			}
+			Page<TableDemo> page = this.tableDemoService.selectAllByPage(pageRequest, searchParams);
+			return this.buildSuccess(page);
+		} catch (Exception exp) {
+			logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
 		}
-		Page<TableDemo> page = this.tableDemoService.selectAllByPage(pageRequest, searchParams);
-		return this.buildSuccess(page);
 	}
 	/**
 	 * 删除数据
@@ -95,9 +96,14 @@ public class TableDemoController extends BaseController {
 	@ApiResponse(response=JsonResponse.class, code = 200, message = "success")
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
 	@ResponseBody
-	public Object deleteBatch(@RequestBody List<TableDemo> listData) throws Exception {
-		this.tableDemoService.deleteBatch(listData);
-		return super.buildSuccess();
+	public Object deleteBatch(@RequestBody List<TableDemo> listData) {
+		try{
+			this.tableDemoService.deleteBatch(listData);
+			return super.buildSuccess();
+		} catch (Exception exp) {
+			logger.error(MessageSourceUtil.getMessage(KEY4, MSG4), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY4, MSG4), RequestStatusEnum.FAIL_FIELD);
+		}
 	}
 
 	/**
@@ -112,10 +118,28 @@ public class TableDemoController extends BaseController {
 	@ResponseBody
 	public Object insertSelective(@RequestBody TableDemo entity) {
 		try {
+			 /**国际化 当前语种*/
+            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
+            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
+            if (StringUtils.isBlank(loacleName)) {
+            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+            }
+            /**国际化 验证默认语种*/
+            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
+            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
+            if (StringUtils.isBlank(defaultName)) {
+            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+            }
+            /**国际化 验证简体中文**/
+            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
+            if (StringUtils.isBlank(simpleChineseName)) {
+            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+            }
 			this.tableDemoService.insertSelective(entity);
 			return this.buildSuccess(entity);
 		} catch (Exception exp) {
-			return this.buildError("msg", exp.getMessage(), RequestStatusEnum.FAIL_FIELD);
+			logger.error(MessageSourceUtil.getMessage(KEY2, MSG2), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY2, MSG2), RequestStatusEnum.FAIL_FIELD);
 		}
 	}
 
@@ -131,10 +155,28 @@ public class TableDemoController extends BaseController {
 	@ResponseBody
 	public Object updateSelective(@RequestBody TableDemo entity) {
 		try {
+			/**国际化 当前语种*/
+            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
+            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
+            if (StringUtils.isBlank(loacleName)) {
+            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+            }
+            /**国际化 验证默认语种*/
+            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
+            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
+            if (StringUtils.isBlank(defaultName)) {
+            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+            }
+            /**国际化 验证简体中文**/
+            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
+            if (StringUtils.isBlank(simpleChineseName)) {
+            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
+            }
 			this.tableDemoService.updateSelective(entity);
 			return this.buildSuccess(entity);
 		} catch (Exception exp) {
-			return this.buildError("msg", exp.getMessage(), RequestStatusEnum.FAIL_FIELD);
+			logger.error(MessageSourceUtil.getMessage(KEY3, MSG3), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY3, MSG3), RequestStatusEnum.FAIL_FIELD);
 		}
 	}
 }

@@ -8,14 +8,15 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 
 @Service
 public class ModelEnumService implements QueryFeatureExtension<Model> {
 
 	private static Map<String, String> modelTypeMap = new HashMap<String, String>();
 	static {
-		modelTypeMap.put("1", "测试1");
-		modelTypeMap.put("2", "测试2");
+		modelTypeMap.put("1", MessageSourceUtil.getMessage("ja.tree.enum.0001","测试1"));
+		modelTypeMap.put("2", MessageSourceUtil.getMessage("ja.tree.enum.0002","测试2"));
 	}
 
 	@Override
@@ -28,7 +29,6 @@ public class ModelEnumService implements QueryFeatureExtension<Model> {
 			}
 			resultList.add(entity);
 		}
-
 		return resultList;
 	}
 

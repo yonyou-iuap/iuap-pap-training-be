@@ -8,6 +8,12 @@
 		<result column="MODEL_CODE" property="modelCode" />
 		<result column="MODEL_TYPE" property="modelType" />
 		<result column="MODEL_CONTENT" property="modelContent" />
+		
+		<result column="MODEL_NAME2" property="modelName2" />
+		<result column="MODEL_NAME3" property="modelName3" />
+		<result column="MODEL_NAME4" property="modelName4" />
+		<result column="MODEL_NAME5" property="modelName5" />
+		<result column="MODEL_NAME6" property="modelName6" />
 
 		<result column="dr" property="dr" />
 		<result column="ts" property="ts" />
@@ -32,6 +38,26 @@
 			<if
 				test="condition.searchMap.modelName!=null and condition.searchMap.modelName!='' ">
 				and t.MODEL_NAME = #{condition.searchMap.modelName}
+			</if>
+			<if
+				test="condition.searchMap.modelName2!=null and condition.searchMap.modelName2!='' ">
+				and t.MODEL_NAME2 = #{condition.searchMap.modelName2}
+			</if>
+			<if
+				test="condition.searchMap.modelName3!=null and condition.searchMap.modelName3!='' ">
+				and t.MODEL_NAME3 = #{condition.searchMap.modelName3}
+			</if>
+			<if
+				test="condition.searchMap.modelName4!=null and condition.searchMap.modelName4!='' ">
+				and t.MODEL_NAME4 = #{condition.searchMap.modelName4}
+			</if>
+			<if
+				test="condition.searchMap.modelName5!=null and condition.searchMap.modelName5!='' ">
+				and t.MODEL_NAME5 = #{condition.searchMap.modelName5}
+			</if>
+			<if
+				test="condition.searchMap.modelName6!=null and condition.searchMap.modelName6!='' ">
+				and t.MODEL_NAME6 = #{condition.searchMap.modelName6}
 			</if>
 			<if
 				test="condition.searchMap.modelCode!=null and condition.searchMap.modelCode!='' ">

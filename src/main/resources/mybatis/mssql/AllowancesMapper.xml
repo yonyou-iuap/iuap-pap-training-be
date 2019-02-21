@@ -21,6 +21,12 @@
 		<result column="NAME" property="name" />
 		<result column="SERVICE_YEARS" property="serviceYears" />
 		<result column="APPLY_TIME" property="applyTime" />
+		
+		<result column="NAME2" property="name2" />
+		<result column="NAME3" property="name3" />
+		<result column="NAME4" property="name4" />
+		<result column="NAME5" property="name5" />
+		<result column="NAME6" property="name6" />
 
 		<result column="dr" property="dr" />
 		<result column="ts" property="ts" />
@@ -106,6 +112,26 @@
 			<if
 				test="condition.searchMap.name!=null and condition.searchMap.name!='' ">
 				and t.NAME LIKE CONCAT( CONCAT('%', #{condition.searchMap.name}),'%')
+			</if>
+			<if
+				test="condition.searchMap.name2!=null and condition.searchMap.name2!='' ">
+				and t.NAME2 LIKE CONCAT( CONCAT('%', #{condition.searchMap.name2}),'%')
+			</if>
+			<if
+				test="condition.searchMap.name3!=null and condition.searchMap.name3!='' ">
+				and t.NAME3 LIKE CONCAT( CONCAT('%', #{condition.searchMap.name3}),'%')
+			</if>
+			<if
+				test="condition.searchMap.name4!=null and condition.searchMap.name4!='' ">
+				and t.NAME4 LIKE CONCAT( CONCAT('%', #{condition.searchMap.name4}),'%')
+			</if>
+			<if
+				test="condition.searchMap.name5!=null and condition.searchMap.name5!='' ">
+				and t.NAME5 LIKE CONCAT( CONCAT('%', #{condition.searchMap.name5}),'%')
+			</if>
+			<if
+				test="condition.searchMap.name6!=null and condition.searchMap.name6!='' ">
+				and t.NAME6 LIKE CONCAT( CONCAT('%', #{condition.searchMap.name6}),'%')
 			</if>
 			<if
 				test="condition.searchMap.serviceYears!=null and condition.searchMap.serviceYears!='' ">

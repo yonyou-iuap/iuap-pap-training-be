@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 import com.yonyou.iuap.passenger.entity.TravelingInformation;
 
 @Service
@@ -13,8 +14,8 @@ public class TravelingInformationEnumService implements QueryFeatureExtension<Tr
     
                 private static Map<String, String> payStatusMap = new HashMap<String, String>();
         static{         
-                payStatusMap.put("1", "未支付");
-                payStatusMap.put("2", "已支付");
+                payStatusMap.put("1", MessageSourceUtil.getMessage("ja.pas.enum.0006", "未支付"));
+                payStatusMap.put("2", MessageSourceUtil.getMessage("ja.pas.enum.0007", "已支付"));
         }
     
         
