@@ -40,7 +40,7 @@ public class SwaggerConfig{
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("walsin-API接口")//文档说明、
-                .description("iuap_walsin_demo示例api接口说明文档")
+                .description("iuap-pap-training-be示例api接口说明文档")
                 .version("1.0")//文档版本说明
                 .build();
     }

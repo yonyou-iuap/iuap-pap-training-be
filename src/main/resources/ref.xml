@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<RefViewModelVO code="post_level" i18nkey="ja.res.ref.0033" name="岗位职级" path="org.demo.user" type="6">
+	<RefViewModelVO code="post_level" i18nkey="ja.res.ref.0001" name="岗位职级" path="org.demo.user" type="6">
 		<thead>
-			<field code="code" i18nkey="ja.res.ref.0030">职级编码</field>
-			<field code="type" i18nkey="ja.res.ref.0031">职级类型</field>
-			<field code="post_level" i18nkey="ja.res.ref.0032">职级级别</field>
+			<field code="code" i18nkey="ja.res.ref.0002">职级编码</field>
+			<field code="type" i18nkey="ja.res.ref.0003">职级类型</field>
+			<field code="post_level" i18nkey="ja.res.ref.0004">职级级别</field>
 		</thead>
 
 		<table name="IUAPD_RANKS">
