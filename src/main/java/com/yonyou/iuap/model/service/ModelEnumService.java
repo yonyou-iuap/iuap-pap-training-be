@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
+import com.yonyou.iuap.i18n.MessageSourceUtil;
 
 @Service
 public class ModelEnumService implements QueryFeatureExtension<Model> {

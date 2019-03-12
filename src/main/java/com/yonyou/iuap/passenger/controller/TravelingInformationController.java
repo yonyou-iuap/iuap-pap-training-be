@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yonyou.iuap.base.web.BaseController;
-import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
-import com.yonyou.iuap.pap.base.i18n.MethodUtils;
+import com.yonyou.iuap.i18n.MessageSourceUtil;
 import com.yonyou.iuap.passenger.entity.TravelingInformation;
 import com.yonyou.iuap.passenger.service.TravelingInformationService;
 import javax.servlet.http.HttpServletRequest;

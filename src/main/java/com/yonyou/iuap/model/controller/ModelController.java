@@ -21,8 +21,8 @@ import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.model.entity.Model;
 import com.yonyou.iuap.model.service.ModelService;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
-import com.yonyou.iuap.pap.base.i18n.MethodUtils;
+import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.i18n.MethodUtils;
 
 /**
  * 说明：model测试 基础Controller——提供数据增、删、改、查、导入导出等rest接口

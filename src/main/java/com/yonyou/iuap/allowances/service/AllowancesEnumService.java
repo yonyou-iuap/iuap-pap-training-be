@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
+import com.yonyou.iuap.i18n.MessageSourceUtil;
 
 @Service
 public class AllowancesEnumService implements QueryFeatureExtension<Allowances> {
@@ -19,6 +19,7 @@ public class AllowancesEnumService implements QueryFeatureExtension<Allowances> 
 	private static Map<String, String> allowanceTypeMap = new HashMap<String, String>();
 	private static Map<String, String> monthMap = new HashMap<String, String>();
 	private static Map<String, String> pickTypeMap = new HashMap<String, String>();
+
 	static {
 		sexMap.put("0", MessageSourceUtil.getMessage("ja.all.enum.0001", "女"));
 		sexMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0002", "男"));
