@@ -8,24 +8,24 @@ import org.springframework.stereotype.Service;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.i18n.MethodUtils;
 import com.yonyou.iuap.passenger.entity.TravelingInformation;
+import com.yonyou.iuap.util.I18nEnumAble;
+import com.yonyou.iuap.util.I18nEnumUtil;
 
 @Service
 public class TravelingInformationEnumService implements QueryFeatureExtension<TravelingInformation> {
-
-	private static Map<String, String> payStatusMap = new HashMap<String, String>();
-	static {
-		payStatusMap.put("1", MessageSourceUtil.getMessage("ja.pas.enum.0006", "未支付"));
-		payStatusMap.put("2", MessageSourceUtil.getMessage("ja.pas.enum.0007", "已支付"));
-	}
 
 	@Override
 	public List<TravelingInformation> afterListQuery(List<TravelingInformation> list) {
 		List<TravelingInformation> resultList = new ArrayList<TravelingInformation>();
 		for (TravelingInformation entity : list) {
-			if (entity.getPayStatus() != null) {
-				String value = payStatusMap.get(entity.getPayStatus().toString());
-				entity.setPayStatusEnumValue(value);
+			for (I18nEnumAble i18nEnumAble : I18nEnumUtil.getTravelingInformationI18nEnum()) {
+				Object valueObj = MethodUtils.getter(entity,i18nEnumAble.getCode());
+				if(valueObj != null){
+					String value = i18nEnumAble.getMap().get(valueObj.toString());
+					MethodUtils.setter(entity, i18nEnumAble.getCode()+"EnumValue", value, String.class);
+				}
 			}
 			resultList.add(entity);
 		}

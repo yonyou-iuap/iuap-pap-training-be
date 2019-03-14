@@ -1,6 +1,9 @@
 package com.yonyou.iuap.tree.service;
 
 import com.yonyou.iuap.tree.entity.TableDemo;
+import com.yonyou.iuap.util.I18nEnumAble;
+import com.yonyou.iuap.util.I18nEnumUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,23 +12,21 @@ import org.springframework.stereotype.Service;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.i18n.MethodUtils;
 
 @Service
 public class TableDemoEnumService implements QueryFeatureExtension<TableDemo> {
-
-	private static Map<String, String> sexMap = new HashMap<String, String>();
-	static {
-		sexMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0001", "女"));
-		sexMap.put("2", MessageSourceUtil.getMessage("ja.all.enum.0002", "男"));
-	}
 
 	@Override
 	public List<TableDemo> afterListQuery(List<TableDemo> list) {
 		List<TableDemo> resultList = new ArrayList<TableDemo>();
 		for (TableDemo entity : list) {
-			if (entity.getSex() != null) {
-				String value = sexMap.get(entity.getSex().toString());
-				entity.setSexEnumValue(value);
+			for (I18nEnumAble i18nEnumAble : I18nEnumUtil.getTableDemoI18nEnum()) {
+				Object valueObj = MethodUtils.getter(entity,i18nEnumAble.getCode());
+				if(valueObj != null){
+					String value = i18nEnumAble.getMap().get(valueObj.toString());
+					MethodUtils.setter(entity, i18nEnumAble.getCode()+"EnumValue", value, String.class);
+				}
 			}
 			resultList.add(entity);
 		}

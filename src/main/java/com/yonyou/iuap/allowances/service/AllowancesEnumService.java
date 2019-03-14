@@ -1,7 +1,6 @@
 package com.yonyou.iuap.allowances.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,89 +8,27 @@ import org.springframework.stereotype.Service;
 
 import com.yonyou.iuap.allowances.entity.Allowances;
 import com.yonyou.iuap.baseservice.persistence.support.QueryFeatureExtension;
+import com.yonyou.iuap.i18n.MethodUtils;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.util.I18nEnumAble;
+import com.yonyou.iuap.util.I18nEnumUtil;
 
 @Service
 public class AllowancesEnumService implements QueryFeatureExtension<Allowances> {
-	private static Map<String, String> sexMap = new HashMap<String, String>();
-	private static Map<String, String> exdeedsMap = new HashMap<String, String>();
-	private static Map<String, String> allowanceTypeMap = new HashMap<String, String>();
-	private static Map<String, String> monthMap = new HashMap<String, String>();
-	private static Map<String, String> pickTypeMap = new HashMap<String, String>();
-
-	static {
-		sexMap.put("0", MessageSourceUtil.getMessage("ja.all.enum.0001", "女"));
-		sexMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0002", "男"));
-		exdeedsMap.put("0", MessageSourceUtil.getMessage("ja.all.enum.0003", "未超标"));
-		exdeedsMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0004", "超标"));
-		allowanceTypeMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0005", "电脑补助"));
-		allowanceTypeMap.put("2", MessageSourceUtil.getMessage("ja.all.enum.0006", "住宿补助"));
-		allowanceTypeMap.put("3", MessageSourceUtil.getMessage("ja.all.enum.0007", "交通补助"));
-		monthMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0008", "一月"));
-		monthMap.put("2", MessageSourceUtil.getMessage("ja.all.enum.0009", "二月"));
-		monthMap.put("3", MessageSourceUtil.getMessage("ja.all.enum.0010", "三月"));
-		monthMap.put("4", MessageSourceUtil.getMessage("ja.all.enum.0011", "四月"));
-		monthMap.put("5", MessageSourceUtil.getMessage("ja.all.enum.0012", "五月"));
-		monthMap.put("6", MessageSourceUtil.getMessage("ja.all.enum.0013", "六月"));
-		monthMap.put("7", MessageSourceUtil.getMessage("ja.all.enum.0014", "七月"));
-		monthMap.put("8", MessageSourceUtil.getMessage("ja.all.enum.0015", "八月"));
-		monthMap.put("9", MessageSourceUtil.getMessage("ja.all.enum.0016", "九月"));
-		monthMap.put("10", MessageSourceUtil.getMessage("ja.all.enum.0017", "十月"));
-		monthMap.put("11", MessageSourceUtil.getMessage("ja.all.enum.0018", "十一月"));
-		monthMap.put("12", MessageSourceUtil.getMessage("ja.all.enum.0019", "十二月"));
-		pickTypeMap.put("1", MessageSourceUtil.getMessage("ja.all.enum.0020", "转账"));
-		pickTypeMap.put("2", MessageSourceUtil.getMessage("ja.all.enum.0021", "现金"));
-	}
-
-	public static List<Map> fillDynamicList(List<Map> list) {
-		for (Map<String, Object> item : list) {
-			if(item.get("sex") != null){
-				item.put("sexEnumValue",sexMap.get( String.valueOf(item.get("sex") )  ));
-			}
-			if(item.get("exdeeds") != null){
-				item.put("exdeedsEnumValue",exdeedsMap.get( String.valueOf(item.get("exdeeds") )  ));
-			}
-			if(item.get("allowanceType") != null){
-				item.put("allowanceTypeEnumValue",allowanceTypeMap.get( String.valueOf(item.get("allowanceType") )  ));
-			}
-			if(item.get("month") != null){
-				item.put("monthEnumValue",monthMap.get( String.valueOf(item.get("month") )  ));
-			}
-			if(item.get("pickType") != null){
-				item.put("pickTypeEnumValue",pickTypeMap.get( String.valueOf(item.get("pickType") )  ));
-			}
-		}
-		return list;
-	}
 	
 	@Override
 	public List<Allowances> afterListQuery(List<Allowances> list) {
 		List<Allowances> resultList = new ArrayList<Allowances>();
 		for (Allowances entity : list) {
-			if (entity.getSex() != null) {
-				String value = sexMap.get(entity.getSex().toString());
-				entity.setSexEnumValue(value);
-			}
-			if (entity.getExdeeds() != null) {
-				String value = exdeedsMap.get(entity.getExdeeds().toString());
-				entity.setExdeedsEnumValue(value);
-			}
-			if (entity.getAllowanceType() != null) {
-				String value = allowanceTypeMap.get(entity.getAllowanceType().toString());
-				entity.setAllowanceTypeEnumValue(value);
-			}
-			if (entity.getMonth() != null) {
-				String value = monthMap.get(entity.getMonth().toString());
-				entity.setMonthEnumValue(value);
-			}
-			if (entity.getPickType() != null) {
-				String value = pickTypeMap.get(entity.getPickType().toString());
-				entity.setPickTypeEnumValue(value);
+			for (I18nEnumAble i18nEnumAble : I18nEnumUtil.getAllowancesI18nEnum()) {
+				Object valueObj = MethodUtils.getter(entity,i18nEnumAble.getCode());
+				if(valueObj != null){
+					String value = i18nEnumAble.getMap().get(valueObj.toString());
+					MethodUtils.setter(entity, i18nEnumAble.getCode()+"EnumValue", value, String.class);
+				}
 			}
 			resultList.add(entity);
 		}
-
 		return resultList;
 	}
 
@@ -99,4 +36,21 @@ public class AllowancesEnumService implements QueryFeatureExtension<Allowances> 
 	public SearchParams prepareQueryParam(SearchParams searchParams, Class modelClass) {
 		return searchParams;
 	}	
+	/**
+	 * 动态查询数据 枚举值key-to-value
+	 * 枚举属性约定：sex--->sexEnumValue	
+	 * @param list
+	 * @return
+	 */
+	public static List<Map> fillDynamicList(List<Map> list) {
+		for (Map<String, Object> item : list) {
+			for (I18nEnumAble i18nEnumAble : I18nEnumUtil.getAllowancesI18nEnum()) {
+				if(item.get(i18nEnumAble.getCode()) != null){
+					item.put(i18nEnumAble.getCode()+"EnumValue",i18nEnumAble.getMap().get( String.valueOf(item.get(i18nEnumAble.getCode()) )  ));
+				}
+			}
+		}
+		return list;
+	}
+	
 }
