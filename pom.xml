@@ -71,6 +71,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
+	    
+	<dependency>
+		  <groupId>com.yonyou.iuap</groupId>
+		  <artifactId>iuap-mybatis</artifactId>
+		  <version>3.2.3-RC002</version>
+	 </dependency>
     </dependencies>
     <build>
         <finalName>iuap-pap-training-be</finalName>
