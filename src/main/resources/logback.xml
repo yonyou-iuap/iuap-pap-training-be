@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
 	<jmxConfigurator />
-    <property name="log_name" value="iuap_pap_quickstart"/>
-	<property name="APP_Name" value="iuap_pap_quickstart" />
-
+    <property name="log_name" value="iuap-pap-training-be"/>
+	<property name="APP_Name" value="iuap-pap-training-be" />
+	<contextName>${APP_Name}</contextName>
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%cn] [%X{call_thread_id}] [%X{current_user_name}] [%X{current_tenant_id}] [%thread] %-5level %logger{50} - %msg%n</pattern>
