@@ -1,33 +1,29 @@
 package com.yonyou.iuap.tree.entity;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yonyou.iuap.baseservice.bpm.entity.AbsBpmModel;
 import com.yonyou.iuap.baseservice.print.entity.Printable;
 import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
-import com.yonyou.iuap.baseservice.entity.annotation.Reference;
 import com.yonyou.iuap.baseservice.entity.annotation.Associative;
 import com.yonyou.iuap.baseservice.support.condition.Condition;
 import com.yonyou.iuap.baseservice.support.condition.Match;
 import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
-import com.yonyou.iuap.baseservice.support.generator.Strategy;
+import com.yonyou.iuap.enumeration.entity.anno.EnumValue;
+import com.yonyou.iuap.tree.constant.IsSonEnum;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
-import com.yonyou.iuap.baseservice.entity.annotation.CodingField;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.math.BigDecimal;
 
 /**
  * 树结构
@@ -62,7 +58,7 @@ public class TreeDemo extends AbsBpmModel implements Serializable, MultiTenant, 
 	public String getMainBoCode() {
 		return "TREE_DEMO";
 	}
-
+	@EnumValue(value=IsSonEnum.class,des="isSonEnumValue")
 	@Condition
 	@Column(name = "IS_SON")
 	private Integer isSon; // 是否有子节点

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.yonyou.iuap.allowances.constant.SexEnum;
 import com.yonyou.iuap.baseservice.bpm.entity.AbsBpmModel;
 import com.yonyou.iuap.baseservice.entity.annotation.Associative;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
@@ -20,6 +21,9 @@ import com.yonyou.iuap.baseservice.print.entity.Printable;
 import com.yonyou.iuap.baseservice.support.condition.Condition;
 import com.yonyou.iuap.baseservice.support.condition.Match;
 import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
+import com.yonyou.iuap.enumeration.entity.anno.EnumValue;
+import com.yonyou.iuap.passenger.constant.GradeEnum;
+import com.yonyou.iuap.passenger.constant.IsVipEnum;
 
 import cn.hutool.core.date.DateUtil;
 
@@ -81,7 +85,8 @@ public class Passenger extends AbsBpmModel implements Serializable, MultiTenant,
 	public String getPhone() {
 		return this.phone;
 	}
-
+	
+	@EnumValue(value=SexEnum.class,des="sexEnumValue")
 	@Condition
 	@Column(name = "SEX")
 	private Integer sex; // 乘客性别
@@ -104,7 +109,8 @@ public class Passenger extends AbsBpmModel implements Serializable, MultiTenant,
 	public String getSexEnumValue() {
 		return this.sexEnumValue;
 	}
-
+	
+	@EnumValue(value=GradeEnum.class,des="gradeEnumValue")
 	@Condition
 	@Column(name = "GRADE")
 	private Integer grade; // 会员等级
@@ -163,7 +169,7 @@ public class Passenger extends AbsBpmModel implements Serializable, MultiTenant,
 	public String getDeptName() {
 		return this.deptName;
 	}
-
+	@EnumValue(value=IsVipEnum.class,des="isVipEnumValue")
 	@Condition
 	@Column(name = "IS_VIP")
 	private boolean isVip; // 是否会员

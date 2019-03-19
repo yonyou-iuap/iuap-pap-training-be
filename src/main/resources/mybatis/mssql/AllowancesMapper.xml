@@ -40,7 +40,7 @@
 
 	</resultMap>
 	<select id="selectAllByPage" resultMap="BaseResultMap">
-		SELECT t.* FROM ALLOWANCES t WHERE 1 =1 and t.dr=0
+		SELECT t.* FROM IUAPD_ALLOWANCES t WHERE 1 =1 and t.dr=0
 
 		<if test="condition != null">
 			<if test="condition.searchMap.id!=null and condition.searchMap.id!='' ">

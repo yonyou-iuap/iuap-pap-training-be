@@ -1,7 +1,6 @@
 package com.yonyou.iuap.purchaseorder.entity;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yonyou.iuap.baseservice.bpm.entity.AbsBpmModel;
 import com.yonyou.iuap.baseservice.print.entity.Printable;
@@ -11,7 +10,9 @@ import com.yonyou.iuap.baseservice.entity.annotation.Associative;
 import com.yonyou.iuap.baseservice.support.condition.Condition;
 import com.yonyou.iuap.baseservice.support.condition.Match;
 import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
-import com.yonyou.iuap.baseservice.support.generator.Strategy;
+import com.yonyou.iuap.enumeration.entity.anno.EnumValue;
+import com.yonyou.iuap.purchaseorder.constant.BpmStateEnum;
+import com.yonyou.iuap.purchaseorder.constant.OrderTypeEnum;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingField;
 
@@ -21,7 +22,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.math.BigDecimal;
 
@@ -75,6 +75,7 @@ public class PurchaseOrder extends AbsBpmModel implements Serializable, MultiTen
 		return this.orderUser;
 	}
 
+	@EnumValue(value=OrderTypeEnum.class,des="orderTypeEnumValue")
 	@Condition
 	@Column(name = "ORDER_TYPE")
 	private Integer orderType; // 请购单类型
@@ -134,7 +135,7 @@ public class PurchaseOrder extends AbsBpmModel implements Serializable, MultiTen
 	public String getOrderCode() {
 		return this.orderCode;
 	}
-
+	@EnumValue(value=BpmStateEnum.class,des="bpmStateEnumValue")
 	@Condition(match = Match.EQ)
 	@Column(name = "bpm_state")
 	private Integer bpmState;

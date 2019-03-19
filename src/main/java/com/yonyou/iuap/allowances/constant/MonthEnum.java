@@ -3,10 +3,10 @@ package com.yonyou.iuap.allowances.constant;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.yonyou.iuap.enumeration.entity.I18nEnum;
 import com.yonyou.iuap.i18n.MessageSourceUtil;
-import com.yonyou.iuap.util.I18nEnumAble;
 
-public enum Month implements I18nEnumAble{
+public enum MonthEnum implements I18nEnum{
 		
 	January("1","一月","ja.all.enum.0008"),
 	February("2","二月","ja.all.enum.0009"),
@@ -27,25 +27,20 @@ public enum Month implements I18nEnumAble{
 	
 	private String i18nKey;
 	
-	private Month(String key, String value, String i18nKey) {
+	private MonthEnum(String key, String value, String i18nKey) {
 		this.key = key;
 		this.value = value;
 		this.i18nKey = i18nKey;
 	}
 
 	@Override
-	public String getCode() {
-		String code = Month.class.getSimpleName();
-		return code.substring(0, 1).toLowerCase() + code.substring(1);
-	}
-
-	@Override
-	public Map<String, String> getMap() {
-		Map<String, String> result = new HashMap<String, String>();
-		for(Month item: Month.values()){
+    public Map getMappings() {
+    	Map<String, String> result = new HashMap<String, String>();
+		for(MonthEnum item: MonthEnum.values()){
 			result.put( item.key, MessageSourceUtil.getMessage(item.i18nKey, item.value));
 		}
-		return result;
-	}
+        return result;
+    }
+	
 	
 }

@@ -1,17 +1,20 @@
 package com.yonyou.iuap.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.yonyou.iuap.baseservice.entity.AbsDrModel;
-import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
-import com.yonyou.iuap.baseservice.support.condition.Condition;
-import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
-import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.yonyou.iuap.baseservice.entity.AbsDrModel;
+import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
+import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
+import com.yonyou.iuap.baseservice.support.condition.Condition;
+import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
+import com.yonyou.iuap.enumeration.entity.anno.EnumValue;
+import com.yonyou.iuap.model.constant.ModelTypeEnum;
 
 /**
  * model测试
@@ -64,7 +67,8 @@ public class Model extends AbsDrModel implements Serializable, MultiTenant {
 	public String getModelCode() {
 		return this.modelCode;
 	}
-
+	
+	@EnumValue(value=ModelTypeEnum.class,des="modelTypeEnumValue")
 	@Condition
 	@Column(name = "MODEL_TYPE")
 	private String modelType; // 模型类型

@@ -8,11 +8,13 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.yonyou.iuap.allowances.constant.SexEnum;
 import com.yonyou.iuap.baseservice.entity.AbsDrModel;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
 import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
 import com.yonyou.iuap.baseservice.support.condition.Condition;
 import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
+import com.yonyou.iuap.enumeration.entity.anno.EnumValue;
 
 /**
  * 表TableDemo
@@ -65,7 +67,8 @@ public class TableDemo extends AbsDrModel implements Serializable, MultiTenant {
 	public String getCode() {
 		return this.code;
 	}
-
+	
+	@EnumValue(value=SexEnum.class,des="sexEnumValue")
 	@Condition
 	@Column(name = "SEX")
 	private Integer sex; // 性别
@@ -77,7 +80,7 @@ public class TableDemo extends AbsDrModel implements Serializable, MultiTenant {
 	public Integer getSex() {
 		return this.sex;
 	}
-
+	
 	@Transient
 	private String sexEnumValue; // 性别
 

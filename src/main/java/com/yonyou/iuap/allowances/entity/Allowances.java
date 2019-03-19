@@ -9,6 +9,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.yonyou.iuap.allowances.constant.AllowanceTypeEnum;
+import com.yonyou.iuap.allowances.constant.ExdeedsEnum;
+import com.yonyou.iuap.allowances.constant.MonthEnum;
+import com.yonyou.iuap.allowances.constant.PickTypeEnum;
+import com.yonyou.iuap.allowances.constant.SexEnum;
 import com.yonyou.iuap.baseservice.bpm.entity.AbsBpmModel;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingField;
@@ -20,6 +25,7 @@ import com.yonyou.iuap.baseservice.statistics.support.StatisticsField;
 import com.yonyou.iuap.baseservice.support.condition.Condition;
 import com.yonyou.iuap.baseservice.support.condition.Match;
 import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
+import com.yonyou.iuap.enumeration.entity.anno.EnumValue;
 
 /**
  * 员工津贴记录N
@@ -132,7 +138,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public String getYear() {
 		return this.year;
 	}
-
+	@EnumValue(value=SexEnum.class,des="sexEnumValue")
 	@Condition
 	@Column(name = "SEX")
 	private Integer sex; // 员工性别
@@ -144,7 +150,8 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public Integer getSex() {
 		return this.sex;
 	}
-
+	
+	
 	@Transient
 	private String sexEnumValue; // 员工性别
 
@@ -203,7 +210,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public String getDept() {
 		return this.dept;
 	}
-
+	@EnumValue(value=ExdeedsEnum.class,des="exdeedsEnumValue")
 	@Condition(match = Match.EQ)
 	@Column(name = "EXDEEDS")
 	private Integer exdeeds; // 是否超标
@@ -215,7 +222,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public Integer getExdeeds() {
 		return this.exdeeds;
 	}
-
+	
 	@Transient
 	private String exdeedsEnumValue; // 是否超标
 
@@ -239,7 +246,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public BigDecimal getAllowanceActual() {
 		return this.allowanceActual;
 	}
-
+	@EnumValue(value = AllowanceTypeEnum.class,des="allowanceTypeEnumValue")
 	@Condition
 	@Column(name = "ALLOWANCE_TYPE")
 	private Integer allowanceType; // 补贴类别
@@ -251,7 +258,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public Integer getAllowanceType() {
 		return this.allowanceType;
 	}
-
+	
 	@Transient
 	private String allowanceTypeEnumValue; // 补贴类别
 
@@ -262,7 +269,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public String getAllowanceTypeEnumValue() {
 		return this.allowanceTypeEnumValue;
 	}
-
+	@EnumValue(value = MonthEnum.class,des="monthEnumValue")
 	@Condition(match = Match.EQ)
 	@Column(name = "MONTH")
 	private Integer month; // 月份
@@ -274,7 +281,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public Integer getMonth() {
 		return this.month;
 	}
-
+	
 	@Transient
 	private String monthEnumValue; // 月份
 
@@ -285,7 +292,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public String getMonthEnumValue() {
 		return this.monthEnumValue;
 	}
-
+	@EnumValue(value = PickTypeEnum.class ,des="pickTypeEnumValue")
 	@Condition
 	@Column(name = "PICK_TYPE")
 	private Integer pickType; // 领取方式
@@ -297,7 +304,7 @@ public class Allowances extends AbsBpmModel implements Serializable, Printable, 
 	public Integer getPickType() {
 		return this.pickType;
 	}
-
+	
 	@Transient
 	private String pickTypeEnumValue; // 领取方式
 
