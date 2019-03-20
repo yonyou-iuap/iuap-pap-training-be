@@ -3,6 +3,7 @@ package com.yonyou.iuap.model.entity;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,6 +24,7 @@ import com.yonyou.iuap.model.constant.ModelTypeEnum;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "IUAPD_GRID_TEMP")
 @CodingEntity(codingField = "")
+@Entity
 public class Model extends AbsDrModel implements Serializable, MultiTenant {
 	@Id
 	@GeneratedValue

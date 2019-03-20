@@ -1,17 +1,27 @@
 package com.yonyou.iuap.model.service;
 
-import com.yonyou.iuap.baseservice.intg.service.GenericIntegrateService;
-import com.yonyou.iuap.baseservice.intg.support.ServiceFeature;
-import com.yonyou.iuap.model.dao.ModelMapper;
-import com.yonyou.iuap.model.entity.Model;
-import com.yonyou.uap.busilog.annotation.LogConfig;
+import static com.yonyou.iuap.baseservice.intg.support.ServiceFeature.LOGICAL_DEL;
+import static com.yonyou.iuap.baseservice.intg.support.ServiceFeature.MULTI_TENANT;
+import static com.yonyou.iuap.baseservice.intg.support.ServiceFeature.REFERENCE;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static com.yonyou.iuap.baseservice.intg.support.ServiceFeature.*;
-
-import java.util.List;
+import com.yonyou.iuap.baseservice.intg.service.GenericIntegrateService;
+import com.yonyou.iuap.baseservice.intg.support.ServiceFeature;
+import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
+import com.yonyou.iuap.baseservice.support.condition.Match;
+import com.yonyou.iuap.model.dao.ModelMapper;
+import com.yonyou.iuap.model.entity.Model;
+import com.yonyou.iuap.mvc.type.SearchParams;
+import com.yonyou.uap.busilog.annotation.LogConfig;
 
 @Service
 
@@ -19,30 +29,56 @@ import java.util.List;
  * Model CRUD 核心服务,提供逻辑删除/乐观锁
  */
 public class ModelService extends GenericIntegrateService<Model> {
-
+	
 	private ModelMapper modelMapper;
-
+	
 	@Autowired
 	public void setModelMapper(ModelMapper modelMapper) {
 		this.modelMapper = modelMapper;
 		super.setGenericMapper(modelMapper);
 	}
+	@Autowired
+	private StatCommonService statCommonService;
 
 	@Override
 	@LogConfig(busiCode = "model_deleteBatch", busiName = "视图模型", operation = "视图模型删除", templateId = "model_deleteBatch")
 	public int deleteBatch(List<Model> list) {
 		return super.deleteBatch(list);
 	}
-
+	
 	@Override
 	@LogConfig(busiCode = "model_updateSelective", busiName = "视图模型", operation = "视图模型修改", templateId = "model_updateSelective")
 	public Model updateSelective(Model entity) {
+		
+		Map<String,Object> searchMap = new HashMap<>();
+		List<Map<String, Object>> wheres = new ArrayList<>(2);
+		Map<String, Object> statment1 = new HashMap<>();
+		statment1.put("key","id");
+        statment1.put("value",entity.getId());
+        statment1.put("condition","UEQ");
+        Map<String, Object> statment2 = new HashMap<>();
+		statment2.put("key","modelName");
+        statment2.put("value",entity.getModelName());
+        statment2.put("condition",Match.EQ.name());
+        wheres.add(statment1);
+        wheres.add(statment2);
+        searchMap.put("whereParams", wheres);
+		SearchParams searchParams = new SearchParams();
+		searchParams.setSearchMap(searchMap);
+		List<Map> findAll = this.statCommonService.findAll(searchParams, Model.class.getSimpleName());
+		if(findAll!=null && findAll.size()>=1) {
+			throw new RuntimeException("Data is not unique!");
+        }
 		return super.updateSelective(entity);
 	}
 
 	@Override
 	@LogConfig(busiCode = "model_insertSelective", busiName = "视图模型", operation = "视图模型添加", templateId = "model_insertSelective")
 	public Model insertSelective(Model entity) {
+		List<Model> listData = this.queryList("modelName", entity.getModelName());
+		if(listData!=null && listData.size()>=1) {
+			throw new RuntimeException("Data is not unique!");
+        }
 		return super.insertSelective(entity);
 	}
 
