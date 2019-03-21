@@ -137,7 +137,7 @@ public class ModelController extends BaseController {
 			return this.buildSuccess(entity);
 		} catch (Exception exp) {
 			logger.error(MessageSourceUtil.getMessage(KEY2, MSG2), exp);
-			return this.buildError("msg", MessageSourceUtil.getMessage(KEY2, MSG2), RequestStatusEnum.FAIL_FIELD);
+			return this.buildError("msg", exp.getMessage(), RequestStatusEnum.FAIL_FIELD);
 		}
 	}
 

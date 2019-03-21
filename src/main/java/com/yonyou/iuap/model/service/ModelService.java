@@ -9,15 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.yonyou.iuap.baseservice.intg.service.GenericIntegrateService;
 import com.yonyou.iuap.baseservice.intg.support.ServiceFeature;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
 import com.yonyou.iuap.baseservice.support.condition.Match;
+import com.yonyou.iuap.i18n.MessageSourceUtil;
 import com.yonyou.iuap.model.dao.ModelMapper;
 import com.yonyou.iuap.model.entity.Model;
 import com.yonyou.iuap.mvc.type.SearchParams;
@@ -29,6 +30,8 @@ import com.yonyou.uap.busilog.annotation.LogConfig;
  * Model CRUD 核心服务,提供逻辑删除/乐观锁
  */
 public class ModelService extends GenericIntegrateService<Model> {
+	
+	private Logger log = LoggerFactory.getLogger(ModelService.class);
 	
 	private ModelMapper modelMapper;
 	
@@ -67,7 +70,9 @@ public class ModelService extends GenericIntegrateService<Model> {
 		searchParams.setSearchMap(searchMap);
 		List<Map> findAll = this.statCommonService.findAll(searchParams, Model.class.getSimpleName());
 		if(findAll!=null && findAll.size()>=1) {
-			throw new RuntimeException("Data is not unique!");
+			String msg = MessageSourceUtil.getMessage("ja.model.data.0001", "检索名称不唯一,")+"" + ":" + entity.getModelName();
+			log.error(msg);
+			throw new RuntimeException(msg);
         }
 		return super.updateSelective(entity);
 	}
@@ -77,7 +82,9 @@ public class ModelService extends GenericIntegrateService<Model> {
 	public Model insertSelective(Model entity) {
 		List<Model> listData = this.queryList("modelName", entity.getModelName());
 		if(listData!=null && listData.size()>=1) {
-			throw new RuntimeException("Data is not unique!");
+			String msg = MessageSourceUtil.getMessage("ja.model.data.0001", "检索名称不唯一,")+"" + ":" + entity.getModelName();
+			log.error(msg);
+			throw new RuntimeException(msg);
         }
 		return super.insertSelective(entity);
 	}
