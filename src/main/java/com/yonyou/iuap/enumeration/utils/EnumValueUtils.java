@@ -39,7 +39,6 @@ public class EnumValueUtils {
 	 * list<Entity>处理
 	 */
 	public static List i18nEnumEntityKeyToValue(List dataList, Class classObject) {
-		List resultList = new ArrayList<>();
 		Map<Class, Set<Field>> enumCache = new HashMap();
 		if(!enumCache.containsKey(classObject)){
 			enumCache.put(classObject, new HashSet<Field>());
@@ -67,7 +66,6 @@ public class EnumValueUtils {
 						String value = (String)loadEnumInfo(enumClass)
 								.get(String.valueOf(fieldValue));
 						ReflectUtil.setFieldValue(entity, annotation.des(), value);
-						resultList.add(entity);
 					}
 				}
 			}
@@ -75,7 +73,7 @@ public class EnumValueUtils {
 			logger.error("Bad things!", e);
 		}
 
-		return resultList;
+		return dataList;
 	}
 	/*
 	 * list<Map>处理
