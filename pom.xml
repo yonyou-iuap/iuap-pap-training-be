@@ -77,6 +77,13 @@
 		  <artifactId>iuap-mybatis</artifactId>
 		  <version>3.2.3-RC002</version>
 	 </dependency>
+	 
+	 <dependency>
+	  	<groupId>com.yonyou.iuap.baseservice</groupId>
+		<name>iuap-pap-baseservice-ref</name>
+		<artifactId>iuap-pap-baseservice-ref</artifactId>
+		<version>3.5.5-RC2</version>
+	</dependency>
     </dependencies>
     <build>
         <finalName>iuap-pap-training-be</finalName>
