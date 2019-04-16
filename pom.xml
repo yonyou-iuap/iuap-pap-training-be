@@ -80,7 +80,6 @@
 	 
 	 <dependency>
 	  	<groupId>com.yonyou.iuap.baseservice</groupId>
-		<name>iuap-pap-baseservice-ref</name>
 		<artifactId>iuap-pap-baseservice-ref</artifactId>
 		<version>3.5.5-RC2</version>
 	</dependency>
