@@ -94,7 +94,7 @@
                         <props>
 <!--                         	修改数据库类型后，dbms的属性需要修改，如oracle、postgresql、mybatis -->
                             <prop key="dbms">${jdbc.type}</prop>
-                            <prop key="sqlRegex">.*selectAllByPage</prop>
+                            <prop key="sqlRegex">(.*selectAllByPage)|(.*pageBlobRefTreeGrid)</prop>
                             <prop key="sqlCountNative">true</prop>
                         </props>
                     </property>
