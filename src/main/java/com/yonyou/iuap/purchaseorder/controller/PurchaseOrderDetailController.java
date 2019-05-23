@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yonyou.iuap.base.web.BaseController;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 import com.yonyou.iuap.purchaseorder.entity.PurchaseOrderDetail;
 import com.yonyou.iuap.purchaseorder.service.PurchaseOrderDetailService;
 /**

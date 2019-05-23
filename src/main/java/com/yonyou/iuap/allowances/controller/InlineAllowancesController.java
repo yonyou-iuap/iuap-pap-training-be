@@ -33,8 +33,8 @@ import com.yonyou.iuap.common.utils.ExcelExportImportor;
 import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
-import com.yonyou.iuap.i18n.MethodUtils;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MethodUtils;
 
 import cn.hutool.core.date.DateUtil;
 import jline.internal.Log;

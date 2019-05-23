@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yonyou.iuap.baseservice.bpm.entity.AbsBpmModel;
 import com.yonyou.iuap.baseservice.print.entity.Printable;
-import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
+import com.yonyou.iuap.baseservice.entity.MultiTenant;
 import com.yonyou.iuap.baseservice.entity.annotation.Associative;
 import com.yonyou.iuap.baseservice.support.condition.Condition;
 import com.yonyou.iuap.baseservice.support.condition.Match;

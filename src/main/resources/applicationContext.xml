@@ -42,8 +42,7 @@
 			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
 	<!-- 多语 -->
-	<bean id="applicationContextUtil" class="com.yonyou.iuap.i18n.ApplicationContextUtil" lazy-init="false"/>
-	<bean id="applicationContextUtil2" class="com.yonyou.iuap.pap.base.i18n.ApplicationContextUtil" lazy-init="false"/>
+	<bean id="applicationContextUtil" class="com.yonyou.iuap.pap.base.i18n.ApplicationContextUtil" lazy-init="false"/>
 	<!-- 定义不同的日志、提示等信息的资源加载 -->
 	<bean id="messageSource"
 		  class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

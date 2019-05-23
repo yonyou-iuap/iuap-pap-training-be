@@ -18,7 +18,7 @@ import com.yonyou.iuap.baseservice.intg.service.GenericIntegrateService;
 import com.yonyou.iuap.baseservice.intg.support.ServiceFeature;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
 import com.yonyou.iuap.baseservice.support.condition.Match;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 import com.yonyou.iuap.model.dao.ModelMapper;
 import com.yonyou.iuap.model.entity.Model;
 import com.yonyou.iuap.mvc.type.SearchParams;

@@ -22,7 +22,7 @@ import com.yonyou.iuap.base.web.BaseController;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 
 /**
  * 说明：员工津贴记录 基础Controller——提供数据增、删、改、查、导入导出等rest接口

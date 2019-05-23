@@ -19,7 +19,7 @@ import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.tree.entity.TableDemo;
 import com.yonyou.iuap.tree.service.TableDemoService;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 import com.yonyou.iuap.pap.base.i18n.MethodUtils;
 import com.yonyou.iuap.mvc.type.JsonResponse;
 import io.swagger.annotations.Api;

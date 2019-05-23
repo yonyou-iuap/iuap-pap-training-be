@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yonyou.iuap.baseservice.entity.AbsDrModel;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
-import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
+import com.yonyou.iuap.baseservice.entity.MultiTenant;
 import com.yonyou.iuap.baseservice.support.condition.Condition;
 import com.yonyou.iuap.baseservice.support.generator.GeneratedValue;
 import com.yonyou.iuap.enumeration.entity.anno.EnumValue;

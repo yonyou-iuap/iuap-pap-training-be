@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.yonyou.iuap.enumeration.entity.I18nEnum;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 
 public enum BpmStateEnum implements I18nEnum{
 	

@@ -18,7 +18,7 @@ import com.yonyou.iuap.baseservice.bpm.entity.AbsBpmModel;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingEntity;
 import com.yonyou.iuap.baseservice.entity.annotation.CodingField;
 import com.yonyou.iuap.baseservice.entity.annotation.Reference;
-import com.yonyou.iuap.baseservice.multitenant.entity.MultiTenant;
+import com.yonyou.iuap.baseservice.entity.MultiTenant;
 import com.yonyou.iuap.baseservice.print.entity.Printable;
 import com.yonyou.iuap.baseservice.statistics.support.StatFunctions;
 import com.yonyou.iuap.baseservice.statistics.support.StatisticsField;

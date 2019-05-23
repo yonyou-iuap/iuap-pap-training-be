@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.yonyou.iuap.enumeration.entity.I18nEnum;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 
 public enum SexEnum implements I18nEnum{
 	Female("0","女","ja.all.enum.0001"),

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.yonyou.iuap.allowances.constant.SexEnum;
 import com.yonyou.iuap.enumeration.entity.I18nEnum;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
+import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 
 public enum ModelTypeEnum implements I18nEnum{
 	
