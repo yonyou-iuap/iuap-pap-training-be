@@ -38,6 +38,7 @@ import com.yonyou.iuap.pap.base.i18n.MethodUtils;
 
 import cn.hutool.core.date.DateUtil;
 import jline.internal.Log;
+import com.yonyou.iuap.baseservice.support.exception.CodingException;
 
 /**
  * 说明：员工津贴记录 基础Controller——提供数据增、删、改、查、导入导出等rest接口
@@ -88,7 +89,7 @@ public class InlineAllowancesController extends BaseController {
 	private static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 	
 	/**
-	 * 批量新增
+	 * 批量添加
 	 * @param listData
 	 * @return
 	 */
@@ -97,34 +98,15 @@ public class InlineAllowancesController extends BaseController {
 	@ResponseBody
 	public Object saveMultiple(@RequestBody List<Allowances> listData) {
 		try {
-			for (Allowances allowances : listData) {
-				String now = DateUtil.format(new Date(), DATEFORMAT);
-				allowances.setApplyTime(now);
-				 /**国际化 当前语种*/
-	            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-	            String loacleName = MethodUtils.getDataBySerial(allowances, NAME,localeSerial);
-	            if (StringUtils.isBlank(loacleName)) {
-	            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-	            }
-	            /**国际化 验证默认语种*/
-	            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-	            String defaultName = MethodUtils.getDataBySerial(allowances, NAME,defaultSerial);
-	            if (StringUtils.isBlank(defaultName)) {
-	            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-	            }
-	            /**国际化 验证简体中文**/
-	            String simpleChineseName = MethodUtils.getDataBySerial(allowances, NAME,"");
-	            if (StringUtils.isBlank(simpleChineseName)) {
-	            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-	            }
-			}
 			this.allowancesService.saveMultiple(listData);
 			return this.buildSuccess();
-		} catch (Exception exp) {
-			logger.error(MessageSourceUtil.getMessage(KEY2, MSG2), exp);
-			return this.buildError("msg", MessageSourceUtil.getMessage(KEY2, MSG2), RequestStatusEnum.FAIL_FIELD);
+		} catch (CodingException e) {
+			logger.error(e.getMessage(), e);
+			return this.buildError("msg", e.getMessage(), RequestStatusEnum.FAIL_FIELD);
+		} catch (Exception e) {
+			logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), e);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
 		}
-		
 	}
 	/**
 	 * 批量修改
@@ -136,32 +118,13 @@ public class InlineAllowancesController extends BaseController {
 	@ResponseBody
 	public Object updateMultiple(@RequestBody List<Allowances> listData) {
 		try {
-			for (Allowances allowances : listData) {
-				 /**国际化 当前语种*/
-	            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-	            String loacleName = MethodUtils.getDataBySerial(allowances, NAME,localeSerial);
-	            if (StringUtils.isBlank(loacleName)) {
-	            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-	            }
-	            /**国际化 验证默认语种*/
-	            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-	            String defaultName = MethodUtils.getDataBySerial(allowances, NAME,defaultSerial);
-	            if (StringUtils.isBlank(defaultName)) {
-	            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-	            }
-	            /**国际化 验证简体中文**/
-	            String simpleChineseName = MethodUtils.getDataBySerial(allowances, NAME,"");
-	            if (StringUtils.isBlank(simpleChineseName)) {
-	            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-	            }
-			}
 			this.allowancesService.updateMultiple(listData);
 			return this.buildSuccess();
 		} catch (Exception exp) {
-			logger.error(MessageSourceUtil.getMessage(KEY3, MSG3), exp);
-			return this.buildError("msg", MessageSourceUtil.getMessage(KEY3, MSG3), RequestStatusEnum.FAIL_FIELD);
+			logger.error("exp", exp);
+			return this.buildError("msg", "Error update database", RequestStatusEnum.FAIL_FIELD);
 		}
-		
+
 	}
 		
 	/**
@@ -176,7 +139,7 @@ public class InlineAllowancesController extends BaseController {
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
 	@ResponseBody
 	public Object deleteBatch(@RequestBody List<Allowances> listData, HttpServletRequest request,
-			HttpServletResponse response){
+			HttpServletResponse response) throws Exception {
 		try {
 			this.allowancesService.deleteBatch(listData);
 			return super.buildSuccess();
@@ -184,7 +147,6 @@ public class InlineAllowancesController extends BaseController {
 			logger.error(MessageSourceUtil.getMessage(KEY4, MSG4), exp);
 			return this.buildError("msg", MessageSourceUtil.getMessage(KEY4, MSG4), RequestStatusEnum.FAIL_FIELD);
 		}
-		
 	}
 	/**
 	 * 下载模板

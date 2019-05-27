@@ -29,6 +29,7 @@ import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
 import com.yonyou.iuap.pap.base.i18n.MethodUtils;
+import com.yonyou.iuap.baseservice.support.exception.CodingException;
 
 /**
  * 说明：员工津贴记录 基础Controller——提供数据增、删、改、查、导入导出等rest接口
@@ -72,30 +73,16 @@ public class PopupAllowancesController extends BaseController {
 	@RequestMapping(value = "/insertSelective", method = RequestMethod.POST)
 	@ResponseBody
 	public Object insertSelective(@RequestBody Allowances entity) {
-		try {
-			 /**国际化 当前语种*/
-            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
-            if (StringUtils.isBlank(loacleName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证默认语种*/
-            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
-            if (StringUtils.isBlank(defaultName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证简体中文**/
-            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
-            if (StringUtils.isBlank(simpleChineseName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-			allowancesService.insertSelective(entity);
-			return this.buildSuccess(entity);
-		} catch (Exception exp) {
-			logger.error(MessageSourceUtil.getMessage(KEY2, MSG2), exp);
-			return this.buildError("msg", MessageSourceUtil.getMessage(KEY2, MSG2), RequestStatusEnum.FAIL_FIELD);
-		}
+        try {
+            allowancesService.insertSelective(entity);
+            return this.buildSuccess(entity);
+        } catch (CodingException e) {
+            logger.error(e.getMessage(), e);
+            return this.buildError("msg", e.getMessage(), RequestStatusEnum.FAIL_FIELD);
+        } catch (Exception e) {
+            logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), e);
+            return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
+        }
 	}
 	/**
 	 * 修改
@@ -107,23 +94,6 @@ public class PopupAllowancesController extends BaseController {
 	@ResponseBody
 	public Object updateSelective(@RequestBody Allowances entity) {
 		try {
-			/**国际化 当前语种*/
-            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
-            if (StringUtils.isBlank(loacleName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证默认语种*/
-            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
-            if (StringUtils.isBlank(defaultName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证简体中文**/
-            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
-            if (StringUtils.isBlank(simpleChineseName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
 			allowancesService.updateSelective(entity);
 			return this.buildSuccess(entity);
 		} catch (Exception exp) {
@@ -144,7 +114,7 @@ public class PopupAllowancesController extends BaseController {
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
 	@ResponseBody
 	public Object deleteBatch(@RequestBody List<Allowances> listData, HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws Exception{
 		try {
 			this.allowancesService.deleteBatch(listData);
 			return super.buildSuccess();
