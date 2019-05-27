@@ -1,7 +1,6 @@
 package com.yonyou.iuap.allowances.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +27,13 @@ import com.yonyou.iuap.allowances.service.AllowancesEnumService;
 import com.yonyou.iuap.allowances.service.AllowancesService;
 import com.yonyou.iuap.base.web.BaseController;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
+import com.yonyou.iuap.baseservice.support.exception.CodingException;
 import com.yonyou.iuap.common.utils.ExcelExportImportor;
-import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
-import com.yonyou.iuap.pap.base.i18n.MethodUtils;
 
-import cn.hutool.core.date.DateUtil;
 import jline.internal.Log;
-import com.yonyou.iuap.baseservice.support.exception.CodingException;
 
 /**
  * 说明：员工津贴记录 基础Controller——提供数据增、删、改、查、导入导出等rest接口
@@ -70,9 +65,6 @@ public class InlineAllowancesController extends BaseController {
     private static final String MSG9 = "Excel导入失败！";
     private static final String KEY10 = "ja.all.con1.0010";
     private static final String MSG10 = "Excel导入成功！";
-    private static final String NAME = "name";
-	private static final String KEY = "ja.all.con.00001";
-	private static final String MESSAGE = "名称不能为空！";
     
 	
 	private AllowancesService allowancesService;
@@ -86,7 +78,6 @@ public class InlineAllowancesController extends BaseController {
 	private StatCommonService statCommonService;
 	
 	private static final String MODELCODE = Allowances.class.getSimpleName();
-	private static final String DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 	
 	/**
 	 * 批量添加
@@ -104,8 +95,8 @@ public class InlineAllowancesController extends BaseController {
 			logger.error(e.getMessage(), e);
 			return this.buildError("msg", e.getMessage(), RequestStatusEnum.FAIL_FIELD);
 		} catch (Exception e) {
-			logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), e);
-			return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
+			logger.error(MessageSourceUtil.getMessage(KEY2, MSG2), e);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY2, MSG2), RequestStatusEnum.FAIL_FIELD);
 		}
 	}
 	/**
@@ -121,8 +112,8 @@ public class InlineAllowancesController extends BaseController {
 			this.allowancesService.updateMultiple(listData);
 			return this.buildSuccess();
 		} catch (Exception exp) {
-			logger.error("exp", exp);
-			return this.buildError("msg", "Error update database", RequestStatusEnum.FAIL_FIELD);
+			logger.error(MessageSourceUtil.getMessage(KEY3, MSG3), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY3, MSG3), RequestStatusEnum.FAIL_FIELD);
 		}
 
 	}

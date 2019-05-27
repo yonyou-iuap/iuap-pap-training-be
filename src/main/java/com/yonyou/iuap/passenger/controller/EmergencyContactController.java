@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yonyou.iuap.base.web.BaseController;
-import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
-import com.yonyou.iuap.pap.base.i18n.MethodUtils;
 import com.yonyou.iuap.passenger.entity.EmergencyContact;
 import com.yonyou.iuap.passenger.service.EmergencyContactService;
 
@@ -44,9 +41,6 @@ public class EmergencyContactController extends BaseController {
     private static final String MSG3 = "修改数据异常！";
     private static final String KEY4 = "ja.all.con1.0004";
     private static final String MSG4 = "删除数据异常！";
-    private static final String NAME = "contactName";
-	private static final String KEY = "ja.all.con.00001";
-	private static final String MESSAGE = "名称不能为空！";
 	
 	private EmergencyContactService emergencyContactService;
 
@@ -107,23 +101,6 @@ public class EmergencyContactController extends BaseController {
 	@ResponseBody
 	public Object insertSelective(@RequestBody EmergencyContact entity) {
 		try {
-			 /**国际化 当前语种*/
-            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
-            if (StringUtils.isBlank(loacleName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证默认语种*/
-            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
-            if (StringUtils.isBlank(defaultName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证简体中文**/
-            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
-            if (StringUtils.isBlank(simpleChineseName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
 			entity = this.emergencyContactService.insertSelective(entity);
 			EmergencyContact emergencyContact = emergencyContactService.findById(entity.getId());
 			return this.buildSuccess(emergencyContact);
@@ -142,23 +119,6 @@ public class EmergencyContactController extends BaseController {
 	@ResponseBody
 	public Object updateSelective(@RequestBody EmergencyContact entity) {
 		try {
-			/**国际化 当前语种*/
-            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
-            if (StringUtils.isBlank(loacleName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证默认语种*/
-            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
-            if (StringUtils.isBlank(defaultName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证简体中文**/
-            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
-            if (StringUtils.isBlank(simpleChineseName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
 			entity = this.emergencyContactService.updateSelective(entity);
 			EmergencyContact emergencyContact = emergencyContactService.findById(entity.getId());
 			return this.buildSuccess(emergencyContact);

@@ -4,11 +4,9 @@ import com.yonyou.iuap.base.web.BaseController;
 import com.yonyou.iuap.baseservice.entity.annotation.Associative;
 import com.yonyou.iuap.baseservice.support.exception.CodingException;
 import com.yonyou.iuap.baseservice.vo.GenericAssoVo;
-import com.yonyou.iuap.context.InvocationInfoProxy;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
 import com.yonyou.iuap.pap.base.i18n.MessageSourceUtil;
-import com.yonyou.iuap.pap.base.i18n.MethodUtils;
 import com.yonyou.iuap.purchaseorder.entity.PurchaseOrder;
 import com.yonyou.iuap.purchaseorder.service.PurchaseOrderAssoService;
 import com.yonyou.iuap.purchaseorder.service.PurchaseOrderService;
@@ -38,9 +36,6 @@ public class PurchaseOrderController extends BaseController {
 	private static final String MSG1 = "查询数据异常！";
 	private static final String KEY2 = "ja.all.con1.0002";
 	private static final String MSG2 = "新增数据异常！";
-	private static final String NAME = "orderName";
-	private static final String KEY = "ja.all.con.00001";
-	private static final String MESSAGE = "名称不能为空！";
 	private Logger logger = LoggerFactory.getLogger(PurchaseOrderController.class);
 	private PurchaseOrderService purchaseOrderService;
 	private PurchaseOrderAssoService purchaseOrderAssoService;
@@ -91,32 +86,14 @@ public class PurchaseOrderController extends BaseController {
 			if (annotation == null || StringUtils.isEmpty(annotation.fkName())) {
 				return buildError("msg", MessageSourceUtil.getMessage("ja.pur.con1.0001", "没有@Associative或没有fkName属性！"), RequestStatusEnum.FAIL_FIELD);
 			}
-			PurchaseOrder entity = vo.getEntity();
-			/**国际化 当前语种*/
-			String localeSerial = InvocationInfoProxy.getParameter("locale_serial");
-			String loacleName = MethodUtils.getDataBySerial(entity, NAME, localeSerial);
-			if (StringUtils.isBlank(loacleName)) {
-				return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-			}
-			/**国际化 验证默认语种*/
-			String defaultSerial = InvocationInfoProxy.getParameter("default_serial");
-			String defaultName = MethodUtils.getDataBySerial(entity, NAME, defaultSerial);
-			if (StringUtils.isBlank(defaultName)) {
-				return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-			}
-			/**国际化 验证简体中文**/
-			String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME, "");
-			if (StringUtils.isBlank(simpleChineseName)) {
-				return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-			}
 			Object result = purchaseOrderAssoService.saveAssoVo(vo, annotation);
 			return this.buildSuccess(result);
 		} catch (CodingException e) {
             logger.error(e.getMessage(), e);
             return this.buildError("msg", e.getMessage(), RequestStatusEnum.FAIL_FIELD);
         } catch (Exception e) {
-            logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), e);
-            return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
+        	logger.error(MessageSourceUtil.getMessage(KEY2, MSG2), e);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY2, MSG2), RequestStatusEnum.FAIL_FIELD);
         }
 	}
 

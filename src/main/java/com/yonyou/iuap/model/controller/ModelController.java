@@ -87,23 +87,6 @@ public class ModelController extends BaseController {
 	@ResponseBody
 	public Object updateSelective(@RequestBody Model entity) {
 		try {
-			 /**国际化 当前语种*/
-            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
-            if (StringUtils.isBlank(loacleName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证默认语种*/
-            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
-            if (StringUtils.isBlank(defaultName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证简体中文**/
-            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
-            if (StringUtils.isBlank(simpleChineseName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
 			this.modelService.updateSelective(entity);
 			return this.buildSuccess(entity);
 		} catch (Exception exp) {
@@ -116,23 +99,6 @@ public class ModelController extends BaseController {
 	@ResponseBody
 	public Object insertSelective(@RequestBody Model entity) {
 		try {
-			 /**国际化 当前语种*/
-            String localeSerial= InvocationInfoProxy.getParameter("locale_serial");
-            String loacleName = MethodUtils.getDataBySerial(entity, NAME,localeSerial);
-            if (StringUtils.isBlank(loacleName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证默认语种*/
-            String defaultSerial= InvocationInfoProxy.getParameter("default_serial");
-            String defaultName = MethodUtils.getDataBySerial(entity, NAME,defaultSerial);
-            if (StringUtils.isBlank(defaultName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
-            /**国际化 验证简体中文**/
-            String simpleChineseName = MethodUtils.getDataBySerial(entity, NAME,"");
-            if (StringUtils.isBlank(simpleChineseName)) {
-            	return this.buildError("msg", MessageSourceUtil.getMessage(KEY, MESSAGE), RequestStatusEnum.FAIL_FIELD);
-            }
 			this.modelService.insertSelective(entity);
 			return this.buildSuccess(entity);
 		} catch (Exception exp) {
