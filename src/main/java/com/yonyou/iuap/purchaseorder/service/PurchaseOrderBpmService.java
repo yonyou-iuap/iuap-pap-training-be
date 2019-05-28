@@ -49,7 +49,7 @@ public class PurchaseOrderBpmService extends GenericBpmService<PurchaseOrder> {
 			// 其他变量
 			bpmform.setOtherVariables(buildEntityVars(entity));
 			// 单据url
-			bpmform.setFormUrl("/iuap-pap-training-fe/masterdetail-one#/order?btnFlag=2&search_id=" + entity.getId()); // 单据url
+			bpmform.setFormUrl("/iuap-pap-training-fe/masterdetail-one/#/order?btnFlag=2&search_id=" + entity.getId()); // 单据url
 			// 流程实例名称
 			bpmform.setProcessInstanceName(title); // 流程实例名称
 			// 流程审批后，执行的业务处理类(controller对应URI前缀)
