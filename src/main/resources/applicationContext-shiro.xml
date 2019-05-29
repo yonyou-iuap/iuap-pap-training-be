@@ -121,6 +121,7 @@
 				/**/cxf/** = anon
 				/**/jaxrs/** = anon
 				/**/restWithSign/** = signAuth
+				/**/bpmcallback/doProcessEnd = signAuth
 				/** = statelessAuthc
 			</value>
 		</property>
