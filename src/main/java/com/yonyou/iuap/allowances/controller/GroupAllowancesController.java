@@ -20,9 +20,10 @@ import com.yonyou.iuap.allowances.service.AllowancesEnumService;
 import com.yonyou.iuap.allowances.service.AllowancesService;
 import com.yonyou.iuap.base.web.BaseController;
 import com.yonyou.iuap.baseservice.statistics.service.StatCommonService;
+import com.yonyou.iuap.baseservice.statistics.support.StatParam;
+import com.yonyou.iuap.i18n.MessageSourceUtil;
 import com.yonyou.iuap.mvc.constants.RequestStatusEnum;
 import com.yonyou.iuap.mvc.type.SearchParams;
-import com.yonyou.iuap.i18n.MessageSourceUtil;
 
 /**
  * 说明：员工津贴记录 基础Controller——提供数据增、删、改、查、导入导出等rest接口
@@ -113,6 +114,50 @@ public class GroupAllowancesController extends BaseController {
 		    AllowancesEnumService.fillDynamicList(list);
 	        resultMap.put("content", list);
 		    return buildSuccess(list);
+		} catch (Exception exp) {
+			logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), exp);
+			return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
+		}
+	}
+	
+	/**
+	 * 导入excel
+	 * @param request
+	 * @param file
+	 * @return
+	 */
+	@RequestMapping(value = "/dataForGroupExcel", method = RequestMethod.POST)
+	@ResponseBody
+	@SuppressWarnings(value = { "all" })
+	public Object importExcel(PageRequest pageRequest, @RequestBody Map<String, Object> searchMap) {
+		try {
+			List<String> groups = (List<String>) searchMap.get(StatParam.groupParams.name());
+			SearchParams searchParams = new SearchParams();
+			searchParams.setSearchMap(searchMap);
+			if (pageRequest.getPageSize() == 1) {
+				Integer allCount = Integer.MAX_VALUE - 1;
+				pageRequest = new PageRequest(pageRequest.getPageNumber(), allCount, pageRequest.getSort());
+			}
+			Page<Map> page = this.statCommonService.selectAllByPage(pageRequest, searchParams, MODELCODE);
+
+			AllowancesEnumService.fillDynamicList(page.getContent());
+			if (groups != null && groups.size() > 0) {
+				List<Map> content = page.getContent();
+				for (Map map : content) {
+					SearchParams allowancesSearchParams = new SearchParams();
+					Map<String, Object> allowancesSearchMap = new HashMap<>();
+					for (String group : groups) {
+						allowancesSearchMap.put(group, map.get(group));
+					}
+					PageRequest allowancesPageRequest = new PageRequest(0, Integer.MAX_VALUE-1, pageRequest.getSort());
+					allowancesSearchParams.setSearchMap(allowancesSearchMap);
+					Page<Allowances> allowancesPage = allowancesService.selectAllByPage(allowancesPageRequest,
+							allowancesSearchParams);
+					map.put("Children", allowancesPage.getContent());
+				}
+			}
+
+			return buildSuccess(page);
 		} catch (Exception exp) {
 			logger.error(MessageSourceUtil.getMessage(KEY1, MSG1), exp);
 			return this.buildError("msg", MessageSourceUtil.getMessage(KEY1, MSG1), RequestStatusEnum.FAIL_FIELD);
